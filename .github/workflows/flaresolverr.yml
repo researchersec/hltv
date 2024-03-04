@@ -23,6 +23,9 @@ jobs:
     - name: Run FlareSolverr
       run: docker run -d --name flaresolverr-container ghcr.io/flaresolverr/flaresolverr:v3.3.16
 
+    - name: Check container status and IP
+      run: docker inspect -f '{{.State.Running}} {{.NetworkSettings.IPAddress}}' flaresolverr-container
+
     - name: Run Python script
       run: python scraper.py
 
