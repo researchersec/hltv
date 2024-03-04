@@ -1,0 +1,30 @@
+name: FlareSolverr Workflow
+
+on:
+  push:
+    branches:
+      - main
+  # Add additional events that should trigger the workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Pull Docker image
+      run: docker pull ghcr.io/flaresolverr/flaresolverr:v3.3.16
+
+    - name: Run FlareSolverr
+      run: docker run -d --name flaresolverr-container ghcr.io/flaresolverr/flaresolverr:v3.3.16
+
+    - name: Run Python script
+      run: python scraper.py
+
+    - name: Stop FlareSolverr container
+      run: docker stop flaresolverr-container
