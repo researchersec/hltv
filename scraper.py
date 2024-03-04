@@ -1,7 +1,7 @@
 import requests
 
 # URL of the FlareSolverr API endpoint
-url = "http://flaresolverr-container:8191/v1"
+url = "http://172.17.0.3:8191/v1"
 
 # Headers for the POST request
 headers = {"Content-Type": "application/json"}
