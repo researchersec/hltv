@@ -1,7 +1,10 @@
+import sys
 import requests
 
+container_ip = sys.argv[1]
+
 # URL of the FlareSolverr API endpoint
-url = "http://172.17.0.3:8191/v1"
+url = f"http://{container_ip}:8191/v1"
 
 # Headers for the POST request
 headers = {"Content-Type": "application/json"}
