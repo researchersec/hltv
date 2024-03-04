@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  # Add additional events that should trigger the workflow
 
 jobs:
   build:
@@ -23,15 +22,13 @@ jobs:
     - name: Run FlareSolverr
       run: docker run -d --name flaresolverr-container -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:v3.3.16
 
-    - name: Check container status and IP
-      run: docker inspect -f '{{.State.Running}} {{.NetworkSettings.IPAddress}}' flaresolverr-container
-
-    - name: Check if container is reachable
+    - name: Get container IP address
       run: |
-        nc -zv flaresolverr-container 8191
+        CONTAINER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' flaresolverr-container)
+        echo "Container IP address: $CONTAINER_IP"
 
     - name: Run Python script
-      run: python scraper.py
+      run: python scraper.py $CONTAINER_IP
 
     - name: Stop FlareSolverr container
       run: docker stop flaresolverr-container
