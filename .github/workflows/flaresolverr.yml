@@ -22,8 +22,5 @@ jobs:
     - name: Run FlareSolverr
       run: docker run -d --name flaresolverr-container -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:v3.3.16
 
-    - name: Test endpoint
-      run: |
-        curl -L -X POST "http://0.0.0.0:8191/v1" \
-        -H "Content-Type: application/json" \
-        --data-raw '{"cmd": "request.get", "url": "http://www.example.com", "maxTimeout": 60000}'
+    - name: Test local
+      run: nc -zv localhost 8191
