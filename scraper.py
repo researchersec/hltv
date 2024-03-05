@@ -15,14 +15,6 @@ FLARE_SOLVERR_URL = "http://localhost:8191/v1"  # FlareSolverr URL
 TEAM_MAP_FOR_RESULTS = []
 
 def get_parsed_page(url):
-    # This fixes a blocked by cloudflare error i've encountered
-    headers = {
-        "referer": "https://www.hltv.org/stats",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-    }
-
-    cookies = {"hltvTimeZone": HLTV_COOKIE_TIMEZONE}
-
     # Request data through FlareSolverr
     post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
 
