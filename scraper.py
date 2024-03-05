@@ -15,6 +15,14 @@ FLARE_SOLVERR_URL = "http://localhost:8191/v1"  # FlareSolverr URL
 TEAM_MAP_FOR_RESULTS = []
 
 def get_parsed_page(url):
+    # This fixes a blocked by cloudflare error i've encountered
+    headers = {
+        "referer": "https://www.hltv.org/stats",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    }
+
+    cookies = {"hltvTimeZone": HLTV_COOKIE_TIMEZONE}
+
     # Request data through FlareSolverr
     post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
 
@@ -167,28 +175,25 @@ def get_results():
 
     return results_list
 
+def get_results_with_demo_links():
+    results_list = get_results()  # Get the list of results
+
+    for result in results_list:
+        # Get the parsed page for the URL
+        result_page = get_parsed_page(result['url'])
+        
+        # Find the element with class 'stream-box' and extract the 'data-demo-link' attribute
+        demo_link = result_page.find('a', {'class': 'stream-box'}).get('data-demo-link')
+        
+        # Add the demo link to the result dictionary
+        result['demo_link'] = demo_link
+
+    return results_list
+
 if __name__ == "__main__":
     import pprint
 
     pp = pprint.PrettyPrinter()
 
-    # pp.pprint('top5')
-    # pp.pprint(top5teams())
-
-    # pp.pprint('top30')
-    # pp.pprint(top30teams())
-
-    # pp.pprint('top_players')
-    # pp.pprint(top_players())
-
-    # pp.pprint('get_players')
-    # pp.pprint(get_players('6665'))
-
-    # pp.pprint('get_team_info')
-    # pp.pprint(get_team_info('6665'))
-
-    #pp.pprint("get_matches")
-    #pp.pprint(get_matches())
-
-    pp.pprint("get_results")
-    pp.pprint(get_results())
+    pp.pprint("get_results_with_demo_links")
+    pp.pprint(get_results_with_demo_links())
