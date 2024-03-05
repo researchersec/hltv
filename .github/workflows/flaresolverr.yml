@@ -23,7 +23,10 @@ jobs:
       run: docker run -d --name flaresolverr-container -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:v3.3.16
 
     - name: Check if container is reachable
-      run: curl -L -X POST 'http://localhost:8191/v1' -H 'Content-Type: application/json' --data-raw '{"cmd": "request.get", "url": "http://www.example.com", "maxTimeout": 60000}'
+      run: |
+        curl -L -X POST 'http://localhost:8191/v1' \
+        -H 'Content-Type: application/json' \
+        --data-raw '{"cmd": "request.get", "url": "http://www.example.com", "maxTimeout": 60000}'
 
     - name: Stop FlareSolverr container
       run: docker stop flaresolverr-container
