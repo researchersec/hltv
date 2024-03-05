@@ -8,6 +8,9 @@ def download_demo(url, output_dir="."):
     filename = url.split("/")[-1]  # Extracting filename from URL
     filepath = os.path.join(output_dir, filename)
 
+    # Create the output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+
     # Check if file already exists
     if os.path.exists(filepath):
         print(f"Demo file '{filename}' already exists. Skipping download.")
