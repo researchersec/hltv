@@ -28,6 +28,9 @@ jobs:
     - name: Run FlareSolverr
       run: docker run -d --name flaresolverr-container -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:v3.3.16
 
+    - name: Wait for FlareSolverr to start
+      run: sleep 30
+
     - name: Run Python script
       run: python scraper.py
 
