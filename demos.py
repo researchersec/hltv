@@ -27,12 +27,22 @@ def download_demo(url, output_dir="."):
         )
         response.raise_for_status()  # Raise an exception for non-200 status codes
 
-        # Print out the entire response content for inspection
-        print("Response Content:")
-        print(response.text)
+        # Check if the response is a redirect
+        if response.status_code == 302 and 'Location' in response.headers:
+            redirect_url = response.headers['Location']
+            print(f"Redirected to: {redirect_url}")
+            
+            # Download the redirected URL
+            response = requests.get(redirect_url, stream=True)
 
-        # Raise an error since we couldn't extract the final download URL
-        raise ValueError("Failed to extract final download URL from headers")
+            with open(filepath, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+
+            print(f"Demo downloaded successfully to {filepath}")
+            return filepath
+        else:
+            raise ValueError("Failed to extract final download URL from headers")
 
     except requests.exceptions.RequestException as e:
         print(f"Failed to download demo: {e}")
