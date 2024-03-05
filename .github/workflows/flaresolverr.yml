@@ -30,5 +30,5 @@ jobs:
     - name: Test endpoint
       run: |
         curl -L -X POST "http://$CONTAINER_IP:8191/v1" \
-        -H 'Content-Type: application/json' \
+        -H "Content-Type: application/json" \
         --data-raw '{"cmd": "request.get", "url": "http://www.example.com", "maxTimeout": 60000}'
