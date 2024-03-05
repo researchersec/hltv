@@ -4,6 +4,7 @@ import zoneinfo
 import tzlocal
 import datetime
 from python_utils import converters
+import pprint
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
 HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
@@ -176,24 +177,26 @@ def get_results():
     return results_list
 
 def get_results_with_demo_links():
-    results_list = get_results()  # Get the list of results
+    results_list = get_results()
 
     for result in results_list:
-        # Get the parsed page for the URL
-        result_page = get_parsed_page(result['url'])
-        
-        # Find the element with class 'stream-box' and extract the 'data-demo-link' attribute
-        demo_link = result_page.find('a', {'class': 'stream-box'}).get('data-demo-link')
-        
-        # Add the demo link to the result dictionary
-        result['demo_link'] = demo_link
+        url = result["url"]
+        result_page = get_parsed_page(url)
+
+        if result_page:
+            demo_link_element = result_page.find('a', {'class': 'stream-box'})
+            if demo_link_element:
+                demo_link = demo_link_element.get('data-demo-link')
+                result["demo-link"] = demo_link
+            else:
+                result["demo-link"] = None
+        else:
+            result["demo-link"] = None
 
     return results_list
 
 if __name__ == "__main__":
-    import pprint
-
     pp = pprint.PrettyPrinter()
 
-    pp.pprint("get_results_with_demo_links")
+    pp.pprint("Results with demo links:")
     pp.pprint(get_results_with_demo_links())
