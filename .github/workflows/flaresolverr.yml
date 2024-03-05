@@ -26,10 +26,10 @@ jobs:
       run: nc -zv localhost 8191
 
     - name: Fetch container logs 1
-      run: docker logs -f flaresolverr-container
+      run: timeout 1m docker logs flaresolverr-container -f
 
     - name: Run Python script
       run: python scraper.py
 
     - name: Fetch container logs 2
-      run: docker logs -f flaresolverr-container
+      run: timeout 1m docker logs flaresolverr-container -f
