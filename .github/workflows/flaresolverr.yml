@@ -34,5 +34,13 @@ jobs:
     - name: Run Python script
       run: python demos.py
 
-    - name: Fetch container logs 2
-      run: timeout 1m docker logs -f flaresolverr-container || true
+    #- name: Fetch container logs 2
+      #run: timeout 1m docker logs -f flaresolverr-container || true
+      
+    - name: Commit and push demo file
+      run: |
+        git config --local user.email "hojlund123@live.dk"
+        git config --local user.name "researchersec[bot]"
+        git add demos/*
+        git commit -m "Added demo file"
+        git push
