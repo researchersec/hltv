@@ -22,6 +22,12 @@ jobs:
     - name: Run FlareSolverr
       run: docker run -d --name flaresolverr-container -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:v3.3.16
 
+    - name: Check container status
+      run: docker ps
+
+    - name: Fetch container logs
+      run: docker logs flaresolverr-container
+
     - name: Check if container is reachable
       run: |
         curl -L -X POST 'http://localhost:8191/v1' \
