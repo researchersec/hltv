@@ -23,7 +23,7 @@ def download_demo(url, output_dir="."):
             FLARE_SOLVERR_URL,
             headers={"Content-Type": "application/json"},
             json=post_body,
-            allow_redirects=False,  # Disable automatic redirection
+            allow_redirects=True,  # Disable automatic redirection
         )
         response.raise_for_status()  # Raise an exception for non-200 status codes
 
