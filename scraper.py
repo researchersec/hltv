@@ -1,23 +1,11 @@
-import sys
 import requests
 
-container_ip = sys.argv[1]
-
-# URL of the FlareSolverr API endpoint
-url = f"http://{container_ip}:8191/v1"
-
-# Headers for the POST request
-headers = {"Content-Type": "application/json"}
-
-# Data to be sent in the POST request
-data = {
-    "cmd": "request.get",       # Command to indicate that you want to perform a GET request
-    "url": "http://www.google.com/",  # URL you want to request
-    "maxTimeout": 60000         # Maximum timeout in milliseconds (optional)
+post_body = {
+  "cmd": "request.get",
+  "url":"https://www.petsathome.com/",
+  "maxTimeout": 60000
 }
 
-# Send the POST request to the FlareSolverr API endpoint
-response = requests.post(url, headers=headers, json=data)
+response = requests.post('http://localhost:8191/v1', headers={'Content-Type': 'application/json'}, json=post_body)
 
-# Print the response
-print(response.text)
+print(response.json())
