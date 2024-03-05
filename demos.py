@@ -28,8 +28,8 @@ def download_demo(url, output_dir="."):
         response.raise_for_status()  # Raise an exception for non-200 status codes
 
         # Print out the entire response content for inspection
-        print("Response Headers:")
-        print(response.headers)
+        print("Response Content:")
+        print(response.text)
 
         # Raise an error since we couldn't extract the final download URL
         raise ValueError("Failed to extract final download URL from headers")
