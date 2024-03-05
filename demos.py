@@ -18,12 +18,13 @@ def download_demo(url, output_dir="."):
 
     try:
         print(f"Downloading demo from {url}...")
-        post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
+        post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000, stream=True}
         response = requests.post(
             FLARE_SOLVERR_URL,
             headers={"Content-Type": "application/json"},
             json=post_body,
             allow_redirects=False,  # Disable automatic redirection
+            stream=True,
         )
         response.raise_for_status()  # Raise an exception for non-200 status codes
 
