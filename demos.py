@@ -4,6 +4,7 @@ import requests
 FLARE_SOLVERR_URL = "http://localhost:8191/v1"
 
 def download_demo(url, output_dir="."):
+
     filename = url.split("/")[-1]  # Extracting filename from URL
     filepath = os.path.join(output_dir, filename)
 
@@ -25,6 +26,10 @@ def download_demo(url, output_dir="."):
             allow_redirects=False,  # Disable automatic redirection
         )
         response.raise_for_status()  # Raise an exception for non-200 status codes
+
+        # Print out the response headers for inspection
+        print("Response Headers:")
+        print(response.headers)
 
         # Extract the final download URL from the response headers
         final_url = response.headers.get("Location")
