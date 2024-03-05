@@ -4,7 +4,6 @@ import requests
 FLARE_SOLVERR_URL = "http://localhost:8191/v1"
 
 def download_demo(url, output_dir="."):
-
     filename = url.split("/")[-1]  # Extracting filename from URL
     filepath = os.path.join(output_dir, filename)
 
@@ -20,7 +19,10 @@ def download_demo(url, output_dir="."):
         print(f"Downloading demo from {url}...")
         post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
         response = requests.post(
-            FLARE_SOLVERR_URL, headers={"Content-Type": "application/json"}, json=post_body
+            FLARE_SOLVERR_URL,
+            headers={"Content-Type": "application/json"},
+            json=post_body,
+            allow_redirects=True,  # Allow redirects
         )
         response.raise_for_status()  # Raise an exception for non-200 status codes
         with open(filepath, "wb") as f:
