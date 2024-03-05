@@ -26,8 +26,7 @@ jobs:
       run: docker ps
 
     - name: Fetch container logs
-      run: |
-        docker logs flaresolverr-container
+      run: docker logs -f flaresolverr-container
 
     - name: Check if container is reachable
       run: |
