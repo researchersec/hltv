@@ -27,24 +27,13 @@ def download_demo(url, output_dir="."):
         )
         response.raise_for_status()  # Raise an exception for non-200 status codes
 
-        # Print out the response headers for inspection
-        print("Response Headers:")
-        print(response.headers)
+        # Print out the entire response content for inspection
+        print("Response Content:")
+        print(response.text)
 
-        # Extract the final download URL from the response headers
-        final_url = response.headers.get("Location")
-        if not final_url:
-            raise ValueError("Failed to extract final download URL from headers")
+        # Raise an error since we couldn't extract the final download URL
+        raise ValueError("Failed to extract final download URL from headers")
 
-        # Download the file from the final URL
-        with requests.get(final_url, stream=True) as r:
-            r.raise_for_status()
-            with open(filepath, "wb") as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    f.write(chunk)
-
-        print(f"Demo downloaded successfully to {filepath}")
-        return filepath
     except requests.exceptions.RequestException as e:
         print(f"Failed to download demo: {e}")
         return None
