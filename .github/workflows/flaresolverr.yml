@@ -22,17 +22,13 @@ jobs:
     - name: Run FlareSolverr
       run: docker run -d --name flaresolverr-container -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:v3.3.16
 
-    - name: Check container status
-      run: docker ps
-
-    - name: Fetch container logs
-      run: docker logs -f flaresolverr-container
-
-    - name: Check if container is reachable
+    - name: Fetch container IP address
       run: |
-        curl -L -X POST 'http://localhost:8191/v1' \
+        CONTAINER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' flaresolverr-container)
+        echo "Container IP address: $CONTAINER_IP"
+
+    - name: Test endpoint
+      run: |
+        curl -L -X POST "http://$CONTAINER_IP:8191/v1" \
         -H 'Content-Type: application/json' \
         --data-raw '{"cmd": "request.get", "url": "http://www.example.com", "maxTimeout": 60000}'
-
-    - name: Stop FlareSolverr container
-      run: docker stop flaresolverr-container
