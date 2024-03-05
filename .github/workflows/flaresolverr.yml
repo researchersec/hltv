@@ -24,3 +24,6 @@ jobs:
 
     - name: Test local
       run: nc -zv localhost 8191
+
+    - name: Run Python script
+      run: python scraper.py
