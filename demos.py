@@ -1,31 +1,35 @@
 import requests
+import json
+import os
+ 
+url_cookie = "https://hltv.org/results"
+url_demo = "https://www.hltv.org/download/demo/56508"
+api_url = "http://localhost:8191/v1"
+headers = {"Content-Type": "application/json"}
 
-# URL of the file to download
-url = "https://www.hltv.org/download/demo/56507"
-FLARE_SOLVERR_URL = "http://localhost:8191/v1"
+filename = url_demo.split("/")[-1]+".rar"  # Extracting filename from URL
 
-post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
-
-# Proxy configuration
-proxies = {
-    "http": FLARE_SOLVERR_URL,
-    "https": FLARE_SOLVERR_URL
+data = {
+    "cmd": "request.get",
+    "url": url_cookie,
+    "maxTimeout": 60000
 }
+ 
+response = requests.post(api_url, headers=headers, json=data)
 
-# Send the POST request with proxy configuration
-response = requests.post(
-    FLARE_SOLVERR_URL,
-    headers={"Content-Type": "application/json"},
-    json=post_body,
-    proxies=proxies
-)
+# retrieve the entire JSON response from FlareSolverr
+response_data = json.loads(response.content)
+ 
+# Extract the cookies from the FlareSolverr response
+cookies = response_data["solution"]["cookies"]
 
-# Check if the request was successful
-if response.status_code == 200:
-    # Assuming the response contains the file content, save it to a file
-    filename = "downloaded_file.txt"  # You can specify any filename here
-    with open(filename, "wb") as file:
-        file.write(response.content)
-    print("File downloaded successfully:", filename)
-else:
-    print("Failed to download the file. Status code:", response.status_code)
+# Clean the cookies
+cookies = {cookie["name"]: cookie["value"] for cookie in cookies}
+ 
+# Extract the user agent from the FlareSolverr response
+user_agent = response_data["solution"]["userAgent"]
+
+demo_file = requests.get(url_demo, cookies=cookies, headers={"User-Agent": user_agent}) 
+with open(filename, "wb") as f:
+    f.write(demo_file.content)
+print(f"Demo downloaded successfully to {filename}")
