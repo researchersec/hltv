@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-from py7zr import SevenZipFile, formats
+from pyunpack import Archive
 
 url_cookie = "https://hltv.org/results"
 url_demo = "https://www.hltv.org/download/demo/56508"
@@ -37,13 +37,18 @@ with open(filename, "wb") as f:
     f.write(demo_file.content)
 print(f"Demo downloaded successfully to {filename}")
 
-# Compress the file using py7zr
-compressed_filename = filename + ".7z"
-with SevenZipFile(compressed_filename, 'w', format=formats.get_format('7z')) as archive:
-    archive.write(filename)
+# Extract the contents of the RAR file
+extracted_directory = os.path.splitext(filename)[0]
+Archive(filename).extractall(extracted_directory)
+print(f"File extracted successfully to {extracted_directory}")
 
-print(f"File compressed successfully to {compressed_filename}")
+# Compress the extracted directory into a 7z archive
+compressed_filename = extracted_directory + ".7z"
+Archive(compressed_filename).compress_dir(extracted_directory)
+print(f"Directory compressed successfully to {compressed_filename}")
 
-# Optionally, you can remove the original file
+# Optionally, you can remove the original RAR file and extracted directory
 os.remove(filename)
 print(f"Original file {filename} removed.")
+os.rmdir(extracted_directory)
+print(f"Extracted directory {extracted_directory} removed.")
