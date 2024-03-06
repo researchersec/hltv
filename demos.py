@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-import zipfile
+from py7zr import SevenZipFile, formats
 
 url_cookie = "https://hltv.org/results"
 url_demo = "https://www.hltv.org/download/demo/56508"
@@ -37,12 +37,12 @@ with open(filename, "wb") as f:
     f.write(demo_file.content)
 print(f"Demo downloaded successfully to {filename}")
 
-# Compress the file
-zip_filename = filename + ".zip"
-with zipfile.ZipFile(zip_filename, 'w') as zipf:
-    zipf.write(filename, os.path.basename(filename))
+# Compress the file using py7zr
+compressed_filename = filename + ".7z"
+with SevenZipFile(compressed_filename, 'w', format=formats.get_format('7z')) as archive:
+    archive.write(filename)
 
-print(f"File compressed successfully to {zip_filename}")
+print(f"File compressed successfully to {compressed_filename}")
 
 # Optionally, you can remove the original file
 os.remove(filename)
