@@ -39,17 +39,13 @@ with open(filename, "wb") as f:
 print(f"Demo downloaded successfully to {filename}")
 
 # Extract the contents of the RAR file into a directory
-extracted_directory = None
+extracted_directory = os.path.splitext(filename)[0]
 patoolib.extract_archive(filename, outdir=extracted_directory)
-
-# Ensure the directory is properly defined
-if extracted_directory is None:
-    extracted_directory = os.path.splitext(filename)[0]
 
 print(f"File extracted successfully to {extracted_directory}")
 
 # Compress the extracted directory into a 7z archive
-compressed_filename = extracted_directory + ".7z"
+compressed_filename = filename.split('.')[0] + ".7z"
 patoolib.create_archive(compressed_filename, extracted_directory)
 
 print(f"Directory compressed successfully to {compressed_filename}")
