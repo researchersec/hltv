@@ -41,6 +41,6 @@ jobs:
       run: |
         git config --local user.email "hojlund123@live.dk"
         git config --local user.name "researchersec[bot]"
-        git add demos/*
+        git add downloaded_file.txt
         git commit -m "Added demo file"
         git push
