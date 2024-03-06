@@ -9,7 +9,7 @@ url_demo = "https://www.hltv.org/download/demo/56508"
 api_url = "http://localhost:8191/v1"
 headers = {"Content-Type": "application/json"}
 
-filename = url_demo.split("/")[-1]  # Extracting filename from URL
+filename = url_demo.split("/")[-1]+".7z"  # Extracting filename from URL
 
 data = {
     "cmd": "request.get",
