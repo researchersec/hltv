@@ -37,6 +37,9 @@ with open(filename, "wb") as f:
     f.write(demo_file.content)
 print(f"Demo downloaded successfully to {filename}")
 
+# Define the directory for extraction
+extracted_directory = os.path.splitext(filename)[0]
+
 # Remove the directory if it already exists
 if os.path.exists(extracted_directory):
     shutil.rmtree(extracted_directory)
