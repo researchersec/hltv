@@ -22,8 +22,8 @@ jobs:
     - name: Setup requirements.txt
       run: pip install -r requirements.txt
 
-    - name: py7zr
-      run: pip install py7zr
+    - name: patool
+      run: pip install pyunpack patool
 
     - name: Pull Docker image
       run: docker pull ghcr.io/flaresolverr/flaresolverr:v3.3.16
