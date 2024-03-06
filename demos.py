@@ -1,45 +1,31 @@
-import os
 import requests
 
+# URL of the file to download
+url = "https://www.hltv.org/download/demo/56507"
 FLARE_SOLVERR_URL = "http://localhost:8191/v1"
 
-def download_demo(url, output_dir="."):
+post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
 
-    filename = url.split("/")[-1]  # Extracting filename from URL
-    filepath = os.path.join(output_dir, filename)
+# Proxy configuration
+proxies = {
+    "http": FLARE_SOLVERR_URL,
+    "https": FLARE_SOLVERR_URL
+}
 
-    # Create the output directory if it doesn't exist
-    os.makedirs(output_dir, exist_ok=True)
+# Send the POST request with proxy configuration
+response = requests.post(
+    FLARE_SOLVERR_URL,
+    headers={"Content-Type": "application/json"},
+    json=post_body,
+    proxies=proxies
+)
 
-    # Check if file already exists
-    if os.path.exists(filepath):
-        print(f"Demo file '{filename}' already exists. Skipping download.")
-        return filepath
-
-    try:
-        print(f"Downloading demo from {url}...")
-        post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
-        response = requests.post(
-            FLARE_SOLVERR_URL,
-            headers={"Content-Type": "application/json"},
-            json=post_body,
-            allow_redirects=False,  # Disable automatic redirection
-            stream=True,
-        )
-        response.raise_for_status()  # Raise an exception for non-200 status codes
-
-        # Print out the entire response content for inspection
-        print("Response Content:")
-        print(response.text)
-
-        # Raise an error since we couldn't extract the final download URL
-        raise ValueError("Failed to extract final download URL from headers")
-
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to download demo: {e}")
-        return None
-
-if __name__ == "__main__":
-    # Example usage
-    demo_url = "https://hltv.org/download/demo/85546"
-    download_demo(demo_url, output_dir="demos")
+# Check if the request was successful
+if response.status_code == 200:
+    # Assuming the response contains the file content, save it to a file
+    filename = "downloaded_file.txt"  # You can specify any filename here
+    with open(filename, "wb") as file:
+        file.write(response.content)
+    print("File downloaded successfully:", filename)
+else:
+    print("Failed to download the file. Status code:", response.status_code)
