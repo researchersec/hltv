@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-from pyunpack import Archive
+import patoolib
 
 url_cookie = "https://hltv.org/results"
 url_demo = "https://www.hltv.org/download/demo/56508"
@@ -37,14 +37,19 @@ with open(filename, "wb") as f:
     f.write(demo_file.content)
 print(f"Demo downloaded successfully to {filename}")
 
-# Extract the contents of the RAR file
+# Create a directory for extraction
 extracted_directory = os.path.splitext(filename)[0]
-Archive(filename).extractall(extracted_directory)
+os.makedirs(extracted_directory, exist_ok=True)
+
+# Extract the contents of the RAR file into the directory
+patoolib.extract_archive(filename, outdir=extracted_directory)
+
 print(f"File extracted successfully to {extracted_directory}")
 
 # Compress the extracted directory into a 7z archive
 compressed_filename = extracted_directory + ".7z"
-Archive(compressed_filename).compress_dir(extracted_directory)
+patoolib.create_archive(compressed_filename, extracted_directory)
+
 print(f"Directory compressed successfully to {compressed_filename}")
 
 # Optionally, you can remove the original RAR file and extracted directory
