@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+import shutil
 import patoolib
 
 url_cookie = "https://hltv.org/results"
