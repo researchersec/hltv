@@ -38,18 +38,13 @@ with open(filename, "wb") as f:
     f.write(demo_file.content)
 print(f"Demo downloaded successfully to {filename}")
 
-# Define the directory for extraction
-extracted_directory = os.path.splitext(filename)[0]
-
-# Remove the directory if it already exists
-if os.path.exists(extracted_directory):
-    shutil.rmtree(extracted_directory)
-
-# Create a directory for extraction
-os.makedirs(extracted_directory)
-
-# Extract the contents of the RAR file into the directory
+# Extract the contents of the RAR file into a directory
+extracted_directory = None
 patoolib.extract_archive(filename, outdir=extracted_directory)
+
+# Ensure the directory is properly defined
+if extracted_directory is None:
+    extracted_directory = os.path.splitext(filename)[0]
 
 print(f"File extracted successfully to {extracted_directory}")
 
@@ -62,5 +57,5 @@ print(f"Directory compressed successfully to {compressed_filename}")
 # Optionally, you can remove the original RAR file and extracted directory
 os.remove(filename)
 print(f"Original file {filename} removed.")
-os.rmdir(extracted_directory)
+shutil.rmtree(extracted_directory)
 print(f"Extracted directory {extracted_directory} removed.")
