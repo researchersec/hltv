@@ -190,7 +190,10 @@ def get_results_with_demo_links():
                 demo_link = demo_link_element.get('data-demo-link')
                 tourney_mode_data = tourney_mode.find("div", {"class": "padding preformatted-text"}).text
                 result["demo-link"] = demo_link
-                result["tourney-mode"] = tourney_mode_data
+                if "(Online)" in tourney_mode_data:
+                    result["tourney-mode"] = "online"
+                elif "(LAN)" in tourney_mode_data:
+                    result["tourney-mode"] = "lan"
             else:
                 result["demo-link"] = None
                 result["tourney-mode"] = None
