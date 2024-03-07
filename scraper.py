@@ -188,7 +188,7 @@ def get_results_with_demo_links():
             tourney_mode = result_page.find('div', {'class': 'standard-box veto-box'})
             if demo_link_element:
                 demo_link = demo_link_element.get('data-demo-link')
-                tourney_mode_data = tourney_mode.get('padding preformatted-text')
+                tourney_mode_data = tourney_mode.find("div", {"class": "padding preformatted-text"}).text
                 result["demo-link"] = demo_link
                 result["tourney-mode"] = tourney_mode_data
             else:
