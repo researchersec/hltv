@@ -45,6 +45,12 @@ extracted_directory = os.path.splitext(filename)[0]
 if not os.path.exists(extracted_directory):
     os.makedirs(extracted_directory)
 
+# Execute the ls command and capture the output
+ls_output = os.popen('ls').read()
+
+# Print the output
+print(ls_output)
+
 # Extract the contents of the RAR file into the directory
 patoolib.extract_archive(filename, outdir=extracted_directory)
 
