@@ -47,9 +47,11 @@ if not os.path.exists(extracted_directory):
 
 # Execute the ls command and capture the output
 ls_output = os.popen('ls').read()
+ls_f_output = os.popen('ls 56508').read()
 
 # Print the output
 print(ls_output)
+print(ls_f_output)
 
 # Extract the contents of the RAR file into the directory
 patoolib.extract_archive(filename, outdir=extracted_directory)
