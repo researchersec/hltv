@@ -47,25 +47,18 @@ if not os.path.exists(extracted_directory):
 
 # Execute the ls command and capture the output
 ls_output = os.popen('ls').read()
-ls_f_output = os.popen('ls 56508').read()
-
-# Print the output
 print(ls_output)
-print(ls_f_output)
 
 # Extract the contents of the RAR file into the directory
 patoolib.extract_archive(filename, outdir=extracted_directory)
 
 print(f"File extracted successfully to {extracted_directory}")
 
-# Compress the extracted directory into a 7z archive
-compressed_filename = extracted_directory + ".7zxy"
-patoolib.create_archive(compressed_filename, extracted_directory)
-
-print(f"Directory compressed successfully to {compressed_filename}")
+ls_f_output = os.popen('ls 56508').read()
+print(ls_f_output)
 
 # Optionally, you can remove the original RAR file and extracted directory
-os.remove(filename)
-print(f"Original file {filename} removed.")
-shutil.rmtree(extracted_directory)
-print(f"Extracted directory {extracted_directory} removed.")
+#os.remove(filename)
+#print(f"Original file {filename} removed.")
+#shutil.rmtree(extracted_directory)
+#print(f"Extracted directory {extracted_directory} removed.")
