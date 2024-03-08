@@ -32,10 +32,10 @@ jobs:
       run: docker run -d --name flaresolverr-container -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:v3.3.16
 
     - name: Wait for FlareSolverr to start
-      run: sleep 30
+      run: sleep 20
 
     - name: Run Python script
-      run: python demos.py
+      run: python scraper.py
 
     #- name: Fetch container logs 2
       #run: timeout 1m docker logs -f flaresolverr-container || true
