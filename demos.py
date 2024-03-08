@@ -59,7 +59,7 @@ patoolib.extract_archive(filename, outdir=extracted_directory)
 print(f"File extracted successfully to {extracted_directory}")
 
 # Compress the extracted directory into a 7z archive
-compressed_filename = extracted_directory + ".7z"
+compressed_filename = extracted_directory + ".7zxy"
 patoolib.create_archive(compressed_filename, extracted_directory)
 
 print(f"Directory compressed successfully to {compressed_filename}")
