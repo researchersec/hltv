@@ -225,7 +225,7 @@ def download_extract_compress(demo_link):
     api_url = "http://localhost:8191/v1"
     headers = {"Content-Type": "application/json"}
 
-    filename = demo-link.split("/")[-1]  # Extracting filename from URL
+    filename = demo_link.split("/")[-1]  # Extracting filename from URL
 
     data = {
         "cmd": "request.get",
@@ -247,7 +247,7 @@ def download_extract_compress(demo_link):
 # Extract the user agent from the FlareSolverr response
     user_agent = response_data["solution"]["userAgent"]
 
-    demo_file = requests.get(demo-link, cookies=cookies, headers={"User-Agent": user_agent})
+    demo_file = requests.get(demo_link, cookies=cookies, headers={"User-Agent": user_agent})
     if response.status_code == 200:
         filename = demo_link.split("/")[-1]
         with open(filename, "wb") as f:
