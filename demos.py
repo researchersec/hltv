@@ -255,15 +255,15 @@ def download_extract_compress(demo_link):
         print(f"Demo downloaded successfully to {filename}")
 
         # Define the directory for extraction
-        extracted_directory = os.path.splitext(filename)[0]
+        #extracted_directory = os.path.splitext(filename)[0]
 
         # Create a directory for extraction
-        if not os.path.exists(extracted_directory):
-            os.makedirs(extracted_directory)
+        #if not os.path.exists(extracted_directory):
+            #os.makedirs(extracted_directory)
 
         # Extract the contents of the 7z file into the directory
-        patoolib.extract_archive(filename, outdir=extracted_directory)
-        print(f"File extracted successfully to {extracted_directory}")
+        #patoolib.extract_archive(filename, outdir=extracted_directory)
+        #print(f"File extracted successfully to {extracted_directory}")
 
         # Compress the extracted directory into a 7z archive
         #compressed_filename = extracted_directory + ".7z"
