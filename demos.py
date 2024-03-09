@@ -206,7 +206,8 @@ def get_results_with_demo_links():
                     result["tourney-mode"] = "lan"
                 # Download, extract, and compress the demo file
                 if demo_link:
-                    demo_link = "https://hltv.org"+demo_link
+                    demo_link = "https://www.hltv.org"+demo_link
+                    print(demo_link)
                     download_extract_compress(demo_link)
             else:
                 result["demo-link"] = None
