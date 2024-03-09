@@ -271,8 +271,8 @@ def download_extract_compress(demo_link):
         #print(f"Directory compressed successfully to {compressed_filename}")
 
         # Optionally, you can remove the original 7z file and extracted directory
-        os.remove(filename)
-        print(f"Original file {filename} removed.")
+        #os.remove(filename)
+        #print(f"Original file {filename} removed.")
         #shutil.rmtree(extracted_directory)
         #print(f"Extracted directory {extracted_directory} removed.")
     else:
