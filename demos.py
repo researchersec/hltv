@@ -249,7 +249,7 @@ def download_extract_compress(demo_link):
 
     demo_file = requests.get(demo_link, cookies=cookies, headers={"User-Agent": user_agent})
     if response.status_code == 200:
-        filename = demo_link.split("/")[-1]
+        filename = demo_link.split("/")[-1]+".rar"
         with open(filename, "wb") as f:
             f.write(response.content)
         print(f"Demo downloaded successfully to {filename}")
