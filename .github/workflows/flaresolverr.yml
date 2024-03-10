@@ -38,7 +38,7 @@ jobs:
       run: python demos.py
 
     - name: List files
-      run: ls -l
+      run: du -h
       
     #- name: Fetch container logs 2
       #run: timeout 1m docker logs -f flaresolverr-container || true
