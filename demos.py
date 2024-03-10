@@ -35,9 +35,10 @@ def get_parsed_page(url):
     response = requests.post(
         FLARE_SOLVERR_URL, headers={"Content-Type": "application/json"}, json=post_body
     )
-
+    print("using FL")
     if response.status_code == 200:
         json_response = response.json()
+        print("using FL code 200")
         if json_response.get("status") == "ok":
             html = json_response["solution"]["response"]
             return BeautifulSoup(html, "lxml")
@@ -49,6 +50,7 @@ def get_parsed_page(url):
 def _get_all_teams():
     if not TEAM_MAP_FOR_RESULTS:
         teams = get_parsed_page("https://www.hltv.org/stats/teams?minMapCount=0")
+        print("get_all_teams")
         for team in teams.find_all(
             "td",
             {
@@ -192,6 +194,7 @@ def get_results_with_demo_links():
     for result in results_list:
         url = result["url"]
         result_page = get_parsed_page(url)
+        print("getting demo link")
 
         if result_page:
             demo_link_element = result_page.find('a', {'class': 'stream-box'})
