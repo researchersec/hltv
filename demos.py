@@ -43,7 +43,7 @@ def get_parsed_page(url):
             html = json_response["solution"]["response"]
             return BeautifulSoup(html, "lxml")
 
-    # If FlareSolverr fails or encounters an issue, return None
+    # If FlareSolverr fails, return None
     return None
 
 
