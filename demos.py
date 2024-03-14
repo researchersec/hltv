@@ -232,7 +232,7 @@ def download_extract_compress(demo_link):
 
     data = {
         "cmd": "request.get",
-        "url": url,
+        "url": demo_link,
         "maxTimeout": 60000
     }
 
