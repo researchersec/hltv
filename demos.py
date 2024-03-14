@@ -223,7 +223,7 @@ def get_results_with_demo_links():
 
 
 def download_extract_compress(demo_link):
-    url_cookie = "https://hltv.org/results"
+    #url_cookie = "https://hltv.org/results"
     #url_demo = "https://www.hltv.org/download/demo/56508"
     api_url = "http://localhost:8191/v1"
     headers = {"Content-Type": "application/json"}
@@ -232,7 +232,7 @@ def download_extract_compress(demo_link):
 
     data = {
         "cmd": "request.get",
-        "url": url_cookie,
+        "url": url,
         "maxTimeout": 60000
     }
 
