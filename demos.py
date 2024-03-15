@@ -222,10 +222,12 @@ def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
         # Extract filename from demo link
         filename = demo_link.split("/")[-1] + ".rar"
 
+        url_cookie = "https://hltv.org/results"
+
         # Data for FlareSolverr API request
         data = {
             "cmd": "request.get",
-            "url": demo_link,
+            "url": url_cookie,
             "maxTimeout": 60000
         }
 
