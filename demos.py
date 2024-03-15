@@ -5,7 +5,7 @@ import datetime
 from bs4 import BeautifulSoup
 import zoneinfo
 import tzlocal
-import converters
+from python_utils import converters
 import pprint
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
