@@ -1,165 +1,69 @@
-import os
-import json
 import requests
-import datetime
-from bs4 import BeautifulSoup
-import zoneinfo
-import tzlocal
-from python_utils import converters
-import pprint
+import json
+import os
+import shutil
+import patoolib
 
-HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
-HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
-LOCAL_TIMEZONE_NAME = tzlocal.get_localzone_name()
-LOCAL_ZONEINFO = zoneinfo.ZoneInfo(LOCAL_TIMEZONE_NAME)
+url_cookie = "https://hltv.org/results"
+url_demo = "https://www.hltv.org/download/demo/56508"
+api_url = "http://localhost:8191/v1"
+headers = {"Content-Type": "application/json"}
 
-FLARE_SOLVERR_URL = "http://localhost:8191/v1"
+filename = url_demo.split("/")[-1]+".7z"  # Extracting filename from URL
 
-TEAM_MAP_FOR_RESULTS = []
+data = {
+    "cmd": "request.get",
+    "url": url_cookie,
+    "maxTimeout": 60000
+}
 
+response = requests.post(api_url, headers=headers, json=data)
 
-def get_parsed_page(url):
-    headers = {
-        "referer": "https://www.hltv.org/stats",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-    }
-    cookies = {"hltvTimeZone": HLTV_COOKIE_TIMEZONE}
-    post_body = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
+# retrieve the entire JSON response from FlareSolverr
+response_data = json.loads(response.content)
 
-    try:
-        response = requests.post(FLARE_SOLVERR_URL, headers=headers, json=post_body)
-        response.raise_for_status()
-        json_response = response.json()
-        if json_response.get("status") == "ok":
-            html = json_response["solution"]["response"]
-            return BeautifulSoup(html, "lxml")
-    except requests.RequestException as e:
-        print(f"Error making HTTP request: {e}")
-    
-    return None
+# Extract the cookies from the FlareSolverr response
+cookies = response_data["solution"]["cookies"]
 
+# Clean the cookies
+cookies = {cookie["name"]: cookie["value"] for cookie in cookies}
 
-def _findTeamId(teamName: str):
-    for team in TEAM_MAP_FOR_RESULTS:
-        if team["name"] == teamName:
-            return team["id"]
-    return None
+# Extract the user agent from the FlareSolverr response
+user_agent = response_data["solution"]["userAgent"]
 
+demo_file = requests.get(url_demo, cookies=cookies, headers={"User-Agent": user_agent})
 
-def get_results():
-    results = get_parsed_page("https://www.hltv.org/results/")
-    results_list = []
+# Save the demo file
+with open(filename, "wb") as f:
+    f.write(demo_file.content)
+print(f"Demo downloaded successfully to {filename}")
 
-    pastresults = results.find_all("div", {"class": "results-holder"})
-    for result in pastresults:
-        resultDiv = result.find_all("div", {"class": "result-con"})
-        for res in resultDiv:
-            resultObj = {}
-            resultObj["url"] = "https://hltv.org" + res.find("a", {"class": "a-reset"}).get("href")
-            resultObj["match-id"] = converters.to_int(res.find("a", {"class": "a-reset"}).get("href").split("/")[-2])
+# Define the directory for extraction
+extracted_directory = os.path.splitext(filename)[0]
 
-            # Process date
-            if res.parent.find("span", {"class": "standard-headline"}):
-                dateText = res.parent.find("span", {"class": "standard-headline"}).text.replace("Results for ", "")
-                dateText = dateText.replace("th", "").replace("rd", "").replace("st", "").replace("nd", "")
-                dateArr = dateText.split()
-                dateTextFromArrPadded = converters.padIfNeeded(dateArr[2]) + "-" + \
-                                        converters.padIfNeeded(converters.monthNameToNumber(dateArr[0])) + "-" + \
-                                        converters.padIfNeeded(dateArr[1])
-                dateFromHLTV = datetime.datetime.strptime(dateTextFromArrPadded, "%Y-%m-%d").replace(tzinfo=HLTV_ZONEINFO)
-                dateFromHLTV = dateFromHLTV.astimezone(LOCAL_ZONEINFO)
-                resultObj["date"] = dateFromHLTV.strftime("%Y-%m-%d")
-            else:
-                dt = datetime.date.today()
-                resultObj["date"] = f"{dt.day}/{dt.month}/{dt.year}"
+# Create a directory for extraction
+if not os.path.exists(extracted_directory):
+    os.makedirs(extracted_directory)
 
-            # Process event
-            if res.find("td", {"class": "placeholder-text-cell"}):
-                resultObj["event"] = res.find("td", {"class": "placeholder-text-cell"}).text
-            elif res.find("td", {"class": "event"}):
-                resultObj["event"] = res.find("td", {"class": "event"}).text
-            else:
-                resultObj["event"] = None
+# Execute the ls command and capture the output
+ls_output = os.popen('ls').read()
 
-            # Process teams and scores
-            if res.find_all("td", {"class": "team-cell"}):
-                resultObj["team1"] = res.find_all("td", {"class": "team-cell"})[0].text.strip()
-                resultObj["team1-id"] = _findTeamId(resultObj["team1"])
-                resultObj["team1score"] = converters.to_int(res.find("td", {"class": "result-score"}).find_all("span")[0].text.strip())
-                resultObj["team2"] = res.find_all("td", {"class": "team-cell"})[1].text.strip()
-                resultObj["team2-id"] = _findTeamId(resultObj["team2"])
-                resultObj["team2score"] = converters.to_int(res.find("td", {"class": "result-score"}).find_all("span")[1].text.strip())
-            else:
-                resultObj["team1"] = None
-                resultObj["team1-id"] = None
-                resultObj["team1score"] = None
-                resultObj["team2"] = None
-                resultObj["team2-id"] = None
-                resultObj["team2score"] = None
+# Print the output
+print(ls_output)
 
-            results_list.append(resultObj)
+# Extract the contents of the RAR file into the directory
+patoolib.extract_archive(filename, outdir=extracted_directory)
 
-    return results_list
+print(f"File extracted successfully to {extracted_directory}")
 
+# Compress the extracted directory into a 7z archive
+#compressed_filename = extracted_directory + ".7z"
+#patoolib.create_archive(compressed_filename, extracted_directory)
 
-def get_results_with_demo_links():
-    results_list = get_results()
+#print(f"Directory compressed successfully to {compressed_filename}")
 
-    for result in results_list:
-        url = result["url"]
-        result_page = get_parsed_page(url)
-
-        if result_page:
-            demo_link_element = result_page.find('a', {'class': 'stream-box'})
-            tourney_mode = result_page.find('div', {'class': 'standard-box veto-box'})
-            if demo_link_element:
-                demo_link = demo_link_element.get('data-demo-link')
-                tourney_mode_data = tourney_mode.find("div", {"class": "padding preformatted-text"}).text
-                result["demo-link"] = demo_link
-                result["tourney-mode"] = "online" if "(Online)" in tourney_mode_data else "lan" if "(LAN)" in tourney_mode_data else None
-                if demo_link:
-                    demo_link = "https://www.hltv.org" + demo_link
-                    download_extract_compress(demo_link)
-            else:
-                result["demo-link"] = None
-                result["tourney-mode"] = None
-        else:
-            result["demo-link"] = None
-            result["tourney-mode"] = None
-
-    return results_list
-
-
-def download_extract_compress(demo_link):
-    api_url = "http://localhost:8191/v1"
-    headers = {"Content-Type": "application/json"}
-
-    data = {
-        "cmd": "request.get",
-        "url": demo_link,
-        "maxTimeout": 60000
-    }
-
-    try:
-        response = requests.post(api_url, headers=headers, json=data)
-        response.raise_for_status()
-        response_data = response.json()
-        cookies = {cookie["name"]: cookie["value"] for cookie in response_data["solution"]["cookies"]}
-        user_agent = response_data["solution"]["userAgent"]
-        demo_file = requests.get(demo_link, cookies=cookies, headers={"User-Agent": user_agent})
-        if demo_file.status_code == 200:
-            filename = demo_link.split("/")[-1] + ".rar"
-            with open(filename, "wb") as f:
-                f.write(demo_file.content)
-            print(f"Demo downloaded successfully to {filename}")
-        else:
-            print("Failed to download the demo file.")
-    except requests.RequestException as e:
-        print(f"Error downloading demo file: {e}")
-
-
-if __name__ == "__main__":
-    pp = pprint.PrettyPrinter()
-
-    pp.pprint("Results with demo links:")
-    pp.pprint(get_results_with_demo_links())
+# Optionally, you can remove the original RAR file and extracted directory
+#os.remove(filename)
+#print(f"Original file {filename} removed.")
+#shutil.rmtree(extracted_directory)
+#print(f"Extracted directory {extracted_directory} removed.")
