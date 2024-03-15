@@ -214,14 +214,37 @@ def get_results_with_demo_links():
     return results_list
 
 
-def download_demo_file(demo_link):
+def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
     try:
-        response = requests.get(demo_link)
-        response.raise_for_status()
-        
+        # Define headers
+        headers = {"Content-Type": "application/json"}
+
+        # Extract filename from demo link
         filename = demo_link.split("/")[-1] + ".rar"
+
+        # Data for FlareSolverr API request
+        data = {
+            "cmd": "request.get",
+            "url": demo_link,
+            "maxTimeout": 60000
+        }
+
+        # Request to FlareSolverr API
+        response = requests.post(api_url, headers=headers, json=data)
+        response.raise_for_status()
+
+        # Extract cookies and user agent from the response
+        response_data = json.loads(response.content)
+        cookies = {cookie["name"]: cookie["value"] for cookie in response_data["solution"]["cookies"]}
+        user_agent = response_data["solution"]["userAgent"]
+
+        # Request the demo file with obtained cookies and user agent
+        demo_file = requests.get(demo_link, cookies=cookies, headers={"User-Agent": user_agent})
+        demo_file.raise_for_status()
+
+        # Save the demo file
         with open(filename, "wb") as f:
-            f.write(response.content)
+            f.write(demo_file.content)
         print(f"Demo downloaded successfully to {filename}")
     except requests.RequestException as e:
         print(f"Error downloading demo file: {e}")
