@@ -7,6 +7,8 @@ import zoneinfo
 import tzlocal
 from python_utils import converters
 import pprint
+import rarfile
+import subprocess
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
 HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
@@ -248,6 +250,35 @@ def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
         with open(filename, "wb") as f:
             f.write(demo_file.content)
         print(f"Demo downloaded successfully to {filename}")
+
+        # Extract the contents of the RAR archive
+        with rarfile.RarFile(filename) as rf:
+           rf.extractall()
+        print(f"Unrared succesfully {filename}")
+
+        # Delete the original RAR file
+        os.remove(filename)
+        print(f"Deleted {filename}")
+
+        # Get a list of filenames in the extracted directory
+        extracted_files_dir = "extracted_files"
+        extracted_files = os.listdir(extracted_files_dir)
+        print(extracted_files)
+
+        # Parse the extracted files (replace this with your parsing logic)
+
+        # Delete the extracted files
+        #shutil.rmtree(extracted_files_dir)
+
+        # Compress the parsed output using tar and xz
+        #with tarfile.open("parsed_output.tar", "w") as tf:
+            # Add parsed files to the tar archive
+            # for file in parsed_files:
+            #     tf.add(file) # Add your parsed files here
+
+        # Compress the parsed output using xz
+        #subprocess.run(["xz", "parsed_output.tar"])
+
     except requests.RequestException as e:
         print(f"Error downloading demo file: {e}")
 
