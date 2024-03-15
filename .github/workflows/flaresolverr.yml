@@ -42,8 +42,9 @@ jobs:
 
     - name: List filesized
       run: ls -l
-    #- name: Fetch container logs 2
-      #run: timeout 1m docker logs -f flaresolverr-container || true
+      
+    - name: Fetch container logs 2
+      run: timeout 1m docker logs -f flaresolverr-container || true
       
     - name: Commit and push demo file
       run: |
