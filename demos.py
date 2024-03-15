@@ -55,7 +55,8 @@ print(ls_output)
 patoolib.extract_archive(filename, outdir=extracted_directory)
 
 print(f"File extracted successfully to {extracted_directory}")
-
+ls_f_output = os.popen('ls 56508').read()
+print(ls_f_output)
 # Compress the extracted directory into a 7z archive
 #compressed_filename = extracted_directory + ".7z"
 #patoolib.create_archive(compressed_filename, extracted_directory)
