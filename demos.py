@@ -153,4 +153,13 @@ def download_extract_compress(demo_link):
                 f.write(demo_file.content)
             print(f"Demo downloaded successfully to {filename}")
         else:
-            print("Failed to download the demo file
+            print("Failed to download the demo file.")
+    except requests.RequestException as e:
+        print(f"Error downloading demo file: {e}")
+
+
+if __name__ == "__main__":
+    pp = pprint.PrettyPrinter()
+
+    pp.pprint("Results with demo links:")
+    pp.pprint(get_results_with_demo_links())
