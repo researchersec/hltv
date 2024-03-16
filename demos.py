@@ -9,6 +9,8 @@ from python_utils import converters
 import pprint
 import rarfile
 import subprocess
+import shutil
+from demoparser2 import DemoParser
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
 HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
@@ -215,7 +217,6 @@ def get_results_with_demo_links():
 
     return results_list
 
-
 def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
     try:
         # Define headers
@@ -253,35 +254,47 @@ def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
 
         # Extract the contents of the RAR archive
         with rarfile.RarFile(filename) as rf:
-           rf.extractall()
-        print(f"Unrared succesfully {filename}")
+            rf.extractall()
+            extracted_files = rf.namelist()
+        print(f"Unrared successfully {filename}")
+        print("Extracted files:")
+        for extracted_file in extracted_files:
+            print(extracted_file)
+
+        # Parse and process the extracted files
+        for file in extracted_files:
+            # Assuming 'file' is the path to the extracted file
+            parser = DemoParser(file)
+            event_df = parser.parse_event("player_death", player=["X", "Y"], other=["total_rounds_played"])
+            ticks_df = parser.parse_ticks(["X", "Y"])
+            file_hash = compute_file_hash(file)
+            event_output_dir = f"events/{file_hash}"
+            ticks_output_dir = f"ticks/{file_hash}"
+
+            # Save event_df and ticks_df to JSON files
+            os.makedirs(event_output_dir, exist_ok=True)
+            os.makedirs(ticks_output_dir, exist_ok=True)
+            event_df.to_json(f'{event_output_dir}/{file_hash}.json', indent=4)
+            ticks_df.to_json(f'{ticks_output_dir}/{file_hash}.json', indent=4)
+
+            # Compress the JSON files using xz
+            subprocess.run(["xz", f"{event_output_dir}/{file_hash}.json"])
+            subprocess.run(["xz", f"{ticks_output_dir}/{file_hash}.json"])
+
+            # Delete the JSON files
+            os.remove(f'{event_output_dir}/{file_hash}.json')
+            os.remove(f'{ticks_output_dir}/{file_hash}.json')
+
+        # Delete the extracted files
+        shutil.rmtree("extracted_files")
+        print("Deleted extracted files")
 
         # Delete the original RAR file
         os.remove(filename)
         print(f"Deleted {filename}")
 
-        # Get a list of filenames in the extracted directory
-        extracted_files_dir = "extracted_files"
-        extracted_files = os.listdir(extracted_files_dir)
-        print(extracted_files)
-
-        # Parse the extracted files (replace this with your parsing logic)
-
-        # Delete the extracted files
-        #shutil.rmtree(extracted_files_dir)
-
-        # Compress the parsed output using tar and xz
-        #with tarfile.open("parsed_output.tar", "w") as tf:
-            # Add parsed files to the tar archive
-            # for file in parsed_files:
-            #     tf.add(file) # Add your parsed files here
-
-        # Compress the parsed output using xz
-        #subprocess.run(["xz", "parsed_output.tar"])
-
     except requests.RequestException as e:
         print(f"Error downloading demo file: {e}")
-
 
 if __name__ == "__main__":
     pp = pprint.PrettyPrinter()
