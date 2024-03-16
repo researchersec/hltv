@@ -261,11 +261,17 @@ def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
             f.write(demo_file.content)
         print(f"Demo downloaded successfully to {filename}")
 
-        # Extract the contents of the RAR archive
+        # Create a directory for extraction if it doesn't exist
+        if not os.path.exists("extracted_files"):
+            os.makedirs("extracted_files")
+        
+        # Extract the downloaded file
         with rarfile.RarFile(filename) as rf:
-            rf.extractall()
+            rf.extractall("extracted_files")
             extracted_files = rf.namelist()
-        print(f"Unrared successfully {filename}")
+        print(f"File extracted successfully to extracted_files/")
+        # Extract the contents of the RAR archive
+            
         print("Extracted files:")
         for extracted_file in extracted_files:
             print(extracted_file)
