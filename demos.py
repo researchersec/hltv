@@ -294,8 +294,8 @@ def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
             subprocess.run(["xz", f"{ticks_output_dir}/{file_hash}.json"])
 
             # Delete the JSON files
-            os.remove(f'{event_output_dir}/{file_hash}.json')
-            os.remove(f'{ticks_output_dir}/{file_hash}.json')
+            #os.remove(f'{event_output_dir}/{file_hash}.json')
+            #os.remove(f'{ticks_output_dir}/{file_hash}.json')
 
         # Delete the extracted files
         shutil.rmtree("extracted_files")
