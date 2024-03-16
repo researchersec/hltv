@@ -11,6 +11,7 @@ import rarfile
 import subprocess
 import shutil
 from demoparser2 import DemoParser
+import hashlib
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
 HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
@@ -21,7 +22,15 @@ FLARE_SOLVERR_URL = "http://localhost:8191/v1"
 
 TEAM_MAP_FOR_RESULTS = []
 
-
+def compute_file_hash(filename):
+    """Compute the SHA256 hash of a file."""
+    sha256 = hashlib.sha256()
+    with open(filename, 'rb') as f:
+        # Read file in chunks of 4K
+        for chunk in iter(lambda: f.read(4096), b""):
+            sha256.update(chunk)
+    return sha256.hexdigest()
+    
 def get_parsed_page(url):
     headers = {
         "referer": "https://www.hltv.org/stats",
