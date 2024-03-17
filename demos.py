@@ -298,7 +298,6 @@ def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
             # Compress the JSON files using xz
             subprocess.run(["xz", f"{event_output_dir}/{file_hash}.json"])
             subprocess.run(["xz", f"{ticks_output_dir}/{file_hash}.json"])
-
             # Delete the JSON files
             #os.remove(f'{event_output_dir}/{file_hash}.json')
             #os.remove(f'{ticks_output_dir}/{file_hash}.json')
