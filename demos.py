@@ -279,7 +279,7 @@ def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
         # Parse and process the extracted files
         for file in extracted_files:
             # Assuming 'file' is the path to the extracted file
-            parser = DemoParser(file)
+            parser = DemoParser(f"extracted_files/{file}")
             print("Parsing started")
             event_df = parser.parse_event("player_death", player=["X", "Y"], other=["total_rounds_played"])
             ticks_df = parser.parse_ticks(["X", "Y"])
