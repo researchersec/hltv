@@ -69,7 +69,6 @@ def _padIfNeeded(numberStr: str):
     else:
         return str(numberStr)
 
-
 def _monthNameToNumber(monthName: str):
     # Check for the input "Augu" and convert it to "August"
     # This is necessary because the input string may have been sanitized
