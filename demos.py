@@ -216,7 +216,7 @@ def get_results_with_demo_links():
                 if demo_link:
                     demo_link = "https://www.hltv.org"+demo_link
                     print(demo_link)
-                    download_demo_file(demo_link)
+                    download_demo_file(demo_link, result)
             else:
                 result["demo-link"] = None
                 result["tourney-mode"] = None
