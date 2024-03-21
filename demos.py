@@ -287,8 +287,8 @@ def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
                 event_df = parser.parse_event("player_death", player=["X", "Y"], other=["total_rounds_played"])
                 #ticks_df = parser.parse_ticks(["X", "Y"])
                 file_hash = compute_file_hash(f"extracted_files/{file}")
-                event_output_dir = f"events/{file_hash}"
-                #ticks_output_dir = f"ticks/{file_hash}"
+                event_output_dir = f"result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/events"
+                #ticks_output_dir = f"result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/ticks"
     
                 print("Parsing finished")
                 # Save event_df and ticks_df to JSON files
