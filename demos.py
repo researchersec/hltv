@@ -51,7 +51,6 @@ def get_parsed_page(url):
     
     return None
 
-
 def _get_all_teams():
     if not TEAM_MAP_FOR_RESULTS:
         teams = get_parsed_page("https://www.hltv.org/stats/teams?minMapCount=0")
@@ -69,7 +68,6 @@ def _get_all_teams():
             }
             TEAM_MAP_FOR_RESULTS.append(team)
 
-
 def _findTeamId(teamName: str):
     _get_all_teams()
     for team in TEAM_MAP_FOR_RESULTS:
@@ -77,13 +75,11 @@ def _findTeamId(teamName: str):
             return team["id"]
     return None
 
-
 def _padIfNeeded(numberStr: str):
     if int(numberStr) < 10:
         return str(numberStr).zfill(2)
     else:
         return str(numberStr)
-
 
 def _monthNameToNumber(monthName: str):
     # Check for the input "Augu" and convert it to "August"
@@ -92,7 +88,6 @@ def _monthNameToNumber(monthName: str):
     if monthName == "Augu":
         monthName = "August"
     return datetime.datetime.strptime(monthName, "%B").month
-
 
 def get_results():
     results = get_parsed_page("https://www.hltv.org/results/")
@@ -191,7 +186,6 @@ def get_results():
             results_list.append(resultObj)
 
     return results_list
-
 
 def get_results_with_demo_links():
     results_list = get_results()
