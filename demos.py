@@ -226,7 +226,7 @@ def get_results_with_demo_links():
 
     return results_list
 
-def download_demo_file(demo_link, api_url=FLARE_SOLVERR_URL):
+def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
     try:
         # Define headers
         headers = {"Content-Type": "application/json"}
