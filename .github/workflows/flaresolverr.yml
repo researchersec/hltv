@@ -50,6 +50,8 @@ jobs:
       run: |
         git config --local user.email "hojlund123@live.dk"
         git config --local user.name "researchersec[bot]"
-        git add events/*.xz
+        git add "**/*.xz"
+        git add "**/"
         git commit -m "Added demo file"
         git push
+
