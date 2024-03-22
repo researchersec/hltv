@@ -50,8 +50,8 @@ jobs:
       run: |
         git config --local user.email "hojlund123@live.dk"
         git config --local user.name "researchersec[bot]"
-        git add "**/*.xz"
-        git add "**/"
+        git add "lan/*"
+        git add "online/*"
         git commit -m "Added demo file"
         git push
 
