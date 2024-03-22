@@ -306,7 +306,7 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 output = subprocess.check_output(['ls']).decode('utf-8')
                 print(output)
                 # Delete the JSON files
-                #os.remove(f'{event_output_dir}/{file_hash}.json')
+                os.remove(f'{event_output_dir}/{file_hash}.json')
                 #os.remove(f'{ticks_output_dir}/{file_hash}.json')
             else:
                 print(f"Ignoring file {file} because it's not a .dem file")
