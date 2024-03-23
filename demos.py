@@ -207,7 +207,7 @@ def get_results_with_demo_links():
                 elif "(LAN)" in tourney_mode_data:
                     result["tourney-mode"] = "lan"
                 # Check if any demo directory contains the match-id in its name
-                demo_folders = [folder for folder in os.listdir(os.getcwd()) if result['match-id'] in folder]
+                demo_folders = [folder for folder in os.listdir(os.getcwd()) if str(result['match-id']) in folder]
                 if demo_folders:
                     # If any demo directory contains the match-id, print message and continue to the next result
                     print(f"Demo for match {result['match-id']} already saved. Skipping.")
