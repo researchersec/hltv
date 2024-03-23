@@ -187,8 +187,6 @@ def get_results():
 
     return results_list
 
-import os
-
 def get_results_with_demo_links():
     results_list = get_results()
 
@@ -208,10 +206,10 @@ def get_results_with_demo_links():
                     result["tourney-mode"] = "online"
                 elif "(LAN)" in tourney_mode_data:
                     result["tourney-mode"] = "lan"
-                # Check if the demo directory exists in the repository
-                demo_directory = os.path.join(os.getcwd(), f"{result['tourney-mode']}/{result['event']}/{result['match-id']}")
-                if os.path.exists(demo_directory):
-                    # If demo directory exists, print message and continue to the next result
+                # Check if any demo directory contains the match-id in its name
+                demo_folders = [folder for folder in os.listdir(os.getcwd()) if result['match-id'] in folder]
+                if demo_folders:
+                    # If any demo directory contains the match-id, print message and continue to the next result
                     print(f"Demo for match {result['match-id']} already saved. Skipping.")
                     continue
                 # Download, extract, and compress the demo file
