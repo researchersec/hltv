@@ -208,6 +208,7 @@ def get_results_with_demo_links():
                     result["tourney-mode"] = "lan"
                 # Check if the demo directory exists in the repository using the match-id
                 demo_directory = os.path.join(os.getcwd(), result['tourney-mode'], result['event'], f"{result['match-id']}")
+                print(f"Checking if demo directory exists: {demo_directory}")
                 if os.path.exists(demo_directory):
                     # If demo directory exists, print message and continue to the next result
                     print(f"Demo for match {result['match-id']} already saved. Skipping.")
@@ -225,6 +226,7 @@ def get_results_with_demo_links():
             result["tourney-mode"] = None
 
     return results_list
+
 
 def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
     try:
