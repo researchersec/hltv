@@ -189,6 +189,9 @@ def get_results():
 
 def get_results_with_demo_links():
     results_list = get_results()
+  
+    # Get the root directory of the repository
+    root_directory = os.path.abspath(os.path.join(os.getcwd(), ".."))
 
     for result in results_list:
         url = result["url"]
@@ -207,7 +210,7 @@ def get_results_with_demo_links():
                 elif "(LAN)" in tourney_mode_data:
                     result["tourney-mode"] = "lan"
                 # Check if the demo directory exists in the repository using the match-id
-                demo_directory = os.path.join(os.getcwd(), result['tourney-mode'], result['event'], f"{result['match-id']}")
+                demo_directory = os.path.join(root_directory, result['tourney-mode'], result['event'], f"{result['match-id']}")
                 print(f"Checking if demo directory exists: {demo_directory}")
                 if os.path.exists(demo_directory):
                     # If demo directory exists, print message and continue to the next result
