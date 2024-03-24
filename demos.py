@@ -305,8 +305,8 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 #subprocess.run(["xz", f"{ticks_output_dir}/{file_hash}.json"])
     
                 # Execute the 'ls' command and capture the output
-                output = subprocess.check_output(['ls']).decode('utf-8')
-                print(output)
+                #output = subprocess.check_output(['ls']).decode('utf-8')
+                #print(output)
                 # Delete the JSON files
                 #os.remove(f'{event_output_dir}/{file_hash}.json')
                 #os.remove(f'{ticks_output_dir}/{file_hash}.json')
