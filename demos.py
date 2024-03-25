@@ -290,8 +290,13 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
             
                 print("Parsing started")
                 event_df = parser.parse_event("player_death", player=["X", "Y"], other=["total_rounds_played"])
+                #crosshair_codes
+                last_tick = parser.parse_event("round_end")["tick"].to_list()[-1]
+                crosshairs = parser.parse_ticks(["crosshair_code"],ticks=[last_tick])
+                
                 #ticks_df = parser.parse_ticks(["X", "Y"])
                 file_hash = compute_file_hash(f"extracted_files/{file}")
+                
                 output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}"
                 #ticks_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/ticks"
     
@@ -299,7 +304,10 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 # Save event_df and ticks_df to JSON files
                 os.makedirs(output_dir, exist_ok=True)
                 #os.makedirs(ticks_output_dir, exist_ok=True)
+                
                 event_df.to_json(f'{output_dir}/events.json', indent=4)
+                crosshairs.to_json(f'{output_dir}/crosshair_codes.json', indent=4)
+                
                 #ticks_df.to_json(f'{ticks_output_dir}/{file_hash}.json', indent=4)
     
                 print("Parsed file saved")
