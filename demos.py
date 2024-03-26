@@ -285,7 +285,7 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
         # Parse and process the extracted files
         for file in extracted_files:
             # Assuming 'file' is the path to the extracted file
-            if file.endswith('.dem'):
+            if file.endswith('.dem') and not (file.endswith('-p1.dem') or file.endswith('-p2.dem')):
                 #parser = DemoParser(f"extracted_files/{file}")
                 parsed_demo = Demo(file=f"extracted_files/{file}")
 
