@@ -12,6 +12,7 @@ import subprocess
 import shutil
 from demoparser2 import DemoParser
 import hashlib
+from awpy import Demo
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
 HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
@@ -285,14 +286,16 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
         for file in extracted_files:
             # Assuming 'file' is the path to the extracted file
             if file.endswith('.dem'):
-                parser = DemoParser(f"extracted_files/{file}")
+                #parser = DemoParser(f"extracted_files/{file}")
+                parsed_demo = Demo(file=f"extracted_files/{file}")
+
                 # Proceed with parsing and processing
             
                 print("Parsing started")
-                event_df = parser.parse_event("player_death", player=["X", "Y"], other=["total_rounds_played"])
+                #event_df = parser.parse_event("player_death", player=["X", "Y"], other=["total_rounds_played"])
                 #crosshair_codes
-                last_tick = parser.parse_event("round_end")["tick"].to_list()[-1]
-                crosshairs = parser.parse_ticks(["crosshair_code"],ticks=[last_tick])
+                #last_tick = parser.parse_event("round_end")["tick"].to_list()[-1]
+                #crosshairs = parser.parse_ticks(["crosshair_code"],ticks=[last_tick])
                 
                 #ticks_df = parser.parse_ticks(["X", "Y"])
                 file_hash = compute_file_hash(f"extracted_files/{file}")
@@ -305,11 +308,12 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 os.makedirs(output_dir, exist_ok=True)
                 #os.makedirs(ticks_output_dir, exist_ok=True)
                 
-                event_df.to_json(f'{output_dir}/events.json', indent=4)
-                crosshairs.to_json(f'{output_dir}/crosshair_codes.json', indent=4)
+                #event_df.to_json(f'{output_dir}/events.json', indent=4)
+                #crosshairs.to_json(f'{output_dir}/crosshair_codes.json', indent=4)
                 
                 #ticks_df.to_json(f'{ticks_output_dir}/{file_hash}.json', indent=4)
-    
+                parsed_demo.kills.to_json(f'{output_dir}/kills/{file_hash}.json', indent=1)
+                
                 print("Parsed file saved")
                 # Compress the JSON files using xz
                 subprocess.run(["xz", f"{output_dir}/events.json"])
