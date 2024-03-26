@@ -300,23 +300,23 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 #ticks_df = parser.parse_ticks(["X", "Y"])
                 file_hash = compute_file_hash(f"extracted_files/{file}")
                 
-                output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}"
+                kills_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/kills"
                 #ticks_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/ticks"
     
                 print("Parsing finished")
                 # Save event_df and ticks_df to JSON files
-                os.makedirs(output_dir, exist_ok=True)
+                os.makedirs(kills_output_dir, exist_ok=True)
                 #os.makedirs(ticks_output_dir, exist_ok=True)
                 
                 #event_df.to_json(f'{output_dir}/events.json', indent=4)
                 #crosshairs.to_json(f'{output_dir}/crosshair_codes.json', indent=4)
                 
                 #ticks_df.to_json(f'{ticks_output_dir}/{file_hash}.json', indent=4)
-                parsed_demo.kills.to_json(f'{output_dir}/kills/{file_hash}.json', indent=1)
+                parsed_demo.kills.to_json(f'{kills_output_dir}/{file_hash}.json', indent=1)
                 
                 print("Parsed file saved")
                 # Compress the JSON files using xz
-                subprocess.run(["xz", f"{output_dir}/events.json"])
+                #subprocess.run(["xz", f"{output_dir}/events.json"])
                 #subprocess.run(["xz", f"{ticks_output_dir}/{file_hash}.json"])
     
                 # Execute the 'ls' command and capture the output
