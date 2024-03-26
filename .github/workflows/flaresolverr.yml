@@ -22,8 +22,11 @@ jobs:
     - name: Setup requirements.txt
       run: pip install -r requirements.txt
 
-    - name: patool
+    - name: Setup rarfile
       run: pip install rarfile
+
+    - name: Setup Awpy
+      run: pip install git+https://github.com/pnxenopoulos/awpy@awpy2
 
     - name: Pull Docker image
       run: docker pull ghcr.io/flaresolverr/flaresolverr:v3.3.16
