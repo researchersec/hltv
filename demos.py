@@ -302,17 +302,33 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 
                 kills_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/kills"
                 #ticks_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/ticks"
-    
+                damages_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/damages"
+                bomb_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/bombs"
+                smokes_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/smokes"
+                infernos_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/infernos"
+                weapon_fires_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/weapon_fires"
+                
                 print("Parsing finished")
                 # Save event_df and ticks_df to JSON files
                 os.makedirs(kills_output_dir, exist_ok=True)
                 #os.makedirs(ticks_output_dir, exist_ok=True)
-                
+                os.makedirs(damages_output_dir, exist_ok=True)
+                os.makedirs(bomb_output_dir, exist_ok=True)
+                os.makedirs(smokes_output_dir, exist_ok=True)
+                os.makedirs(infernos_output_dir, exist_ok=True)
+                os.makedirs(weapon_fires_output_dir, exist_ok=True)
+              
                 #event_df.to_json(f'{output_dir}/events.json', indent=4)
                 #crosshairs.to_json(f'{output_dir}/crosshair_codes.json', indent=4)
                 
                 #ticks_df.to_json(f'{ticks_output_dir}/{file_hash}.json', indent=4)
                 parsed_demo.kills.to_json(f'{kills_output_dir}/{file_hash}.json', indent=1)
+                parsed_demo.damages.to_json(f'{damages_output_dir}/{file_hash}.json')
+                parsed_demo.bombs.to_json(f'{bomb_output_dir}/{file_hash}.json')
+                parsed_demo.smokes.to_json(f'{smokes_output_dir}/{file_hash}.json')
+                parsed_demo.infernos.to_json(f'{infernos_output_dir}/{file_hash}.json')
+                parsed_demo.weapon_fires.to_json(f'{weapon_fires_output_dir}/{file_hash}.json')
+
                 
                 print("Parsed file saved")
                 # Compress the JSON files using xz
