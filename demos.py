@@ -323,11 +323,11 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 
                 #ticks_df.to_json(f'{ticks_output_dir}/{file_hash}.json', indent=4)
                 parsed_demo.kills.to_json(f'{kills_output_dir}/{file_hash}.json', indent=1)
-                parsed_demo.damages.to_json(f'{damages_output_dir}/{file_hash}.json')
+                parsed_demo.damages.to_json(f'{damages_output_dir}/{file_hash}.json', indent=1)
                 #parsed_demo.bomb.to_json(f'{bomb_output_dir}/{file_hash}.json')
-                parsed_demo.smokes.to_json(f'{smokes_output_dir}/{file_hash}.json')
-                parsed_demo.infernos.to_json(f'{infernos_output_dir}/{file_hash}.json')
-                parsed_demo.weapon_fires.to_json(f'{weapon_fires_output_dir}/{file_hash}.json')
+                parsed_demo.smokes.to_json(f'{smokes_output_dir}/{file_hash}.json', indent=1)
+                parsed_demo.infernos.to_json(f'{infernos_output_dir}/{file_hash}.json', indent=1)
+                parsed_demo.weapon_fires.to_json(f'{weapon_fires_output_dir}/{file_hash}.json', indent=1)
 
                 
                 print("Parsed file saved")
