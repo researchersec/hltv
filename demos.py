@@ -13,6 +13,7 @@ import shutil
 from demoparser2 import DemoParser
 import hashlib
 from awpy import Demo
+rom awpy.analytics.adr import adr
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
 HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
@@ -286,17 +287,25 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
         for file in extracted_files:
             # Assuming 'file' is the path to the extracted file
             if file.endswith('.dem') and not (file.endswith('-p1.dem') or file.endswith('-p2.dem')):
-                #parser = DemoParser(f"extracted_files/{file}")
+                parser = DemoParser(f"extracted_files/{file}")
                 parsed_demo = Demo(file=f"extracted_files/{file}")
 
                 # Proceed with parsing and processing
             
                 print("Parsing started")
+
+                # Testing demoparser2
                 #event_df = parser.parse_event("player_death", player=["X", "Y"], other=["total_rounds_played"])
-                #crosshair_codes
-                #last_tick = parser.parse_event("round_end")["tick"].to_list()[-1]
-                #crosshairs = parser.parse_ticks(["crosshair_code"],ticks=[last_tick])
                 
+                # crosshair_codes
+                last_tick = parser.parse_event("round_end")["tick"].to_list()[-1]
+                crosshairs = parser.parse_ticks(["crosshair_code"],ticks=[last_tick])
+                    
+                # scoreboard
+                max_tick = parser.parse_event("round_end")["tick"].max()
+                wanted_fields = ["kills_total", "deaths_total", "mvps", "headshot_kills_total", "ace_rounds_total", "4k_rounds_total", "3k_rounds_total"]
+                scoreboard = parser.parse_ticks(wanted_fields, ticks=[max_tick])
+
                 #ticks_df = parser.parse_ticks(["X", "Y"])
                 file_hash = compute_file_hash(f"extracted_files/{file}")
                 
@@ -307,6 +316,9 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 smokes_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/smokes"
                 infernos_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/infernos"
                 weapon_fires_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/weapon_fires"
+                crosshair_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/crosshair_codes"
+                scoreboard_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/scoreboard"
+                adr_output_dir = f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/adr"
                 
                 print("Parsing finished")
                 # Save event_df and ticks_df to JSON files
@@ -317,10 +329,16 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 os.makedirs(smokes_output_dir, exist_ok=True)
                 os.makedirs(infernos_output_dir, exist_ok=True)
                 os.makedirs(weapon_fires_output_dir, exist_ok=True)
-              
+                os.makedirs(crosshair_output_dir, exist_ok=True)
+                os.makedirs(scoreboard_output_dir, exist_ok=True)
+                os.makedirs(adr_output_dir, exist_ok=True)
+
+                # Testing demoparser2
                 #event_df.to_json(f'{output_dir}/events.json', indent=4)
-                #crosshairs.to_json(f'{output_dir}/crosshair_codes.json', indent=4)
-                
+                crosshairs.to_json(f'{crosshair_output_dir}/{file_hash}.json', indent=1)
+                scoreboard.to_json(f'{scoreboard_output_dir}/{file_hash}.json', indent=1)
+
+                # Testing Awpy2
                 #ticks_df.to_json(f'{ticks_output_dir}/{file_hash}.json', indent=4)
                 parsed_demo.kills.to_json(f'{kills_output_dir}/{file_hash}.json', indent=1)
                 parsed_demo.damages.to_json(f'{damages_output_dir}/{file_hash}.json', indent=1)
@@ -329,6 +347,9 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 parsed_demo.infernos.to_json(f'{infernos_output_dir}/{file_hash}.json', indent=1)
                 parsed_demo.weapon_fires.to_json(f'{weapon_fires_output_dir}/{file_hash}.json', indent=1)
 
+                # Awpy2 analytics module
+                adr_match = adr(parsed_demo)
+                adr_match.to_json(f'{adr_output_dir}/{file_hash}.json', indent=1)
                 
                 print("Parsed file saved")
                 # Compress the JSON files using xz
