@@ -193,7 +193,7 @@ def get_results_with_demo_links():
     results_list = get_results()
   
     # Get the root directory of the repository
-    root_directory = os.path.abspath(os.path.join(os.getcwd(), ".."))
+    root_directory = os.getcwd()
 
     for result in results_list:
         url = result["url"]
