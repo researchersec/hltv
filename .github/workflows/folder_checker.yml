@@ -1,17 +1,41 @@
-name: Show Directory Structure
+name: Python Application Workflow
 
 on:
   push:
-    branches:
-      - main 
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  show_directory_structure:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Show Directory Structure
-        run: tree
+    - name: Set Up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # Specify the Python version you need for your project
+
+    # Insert steps here for additional setup, like installing dependencies:
+    # - name: Install Dependencies
+    #   run: |
+    #     python -m pip install --upgrade pip
+    #     pip install -r requirements.txt
+
+    - name: Print 'lan' and 'online' Directory Structure
+      run: |
+        echo "Project Directory Structure:"
+        pwd
+        ls -l
+        echo "Printing the structure for 'lan' directory:"
+        ls -R lan/ || echo "'lan' directory does not exist"
+        echo "Printing the structure for 'online' directory:"
+        ls -R online/ || echo "'online' directory does not exist"
+
+    # Add any additional steps for building/testing your application here:
+    # - name: Run Tests
+    #   run: |
+    #     # Your commands to run tests
