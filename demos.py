@@ -212,13 +212,19 @@ def get_results_with_demo_links():
                 elif "(LAN)" in tourney_mode_data:
                     result["tourney-mode"] = "lan"
                 event_directory = os.path.join(root_directory, result['tourney-mode'], result['event'])
+                
+                # Check if the event directory exists before proceeding
+                if not os.path.exists(event_directory):
+                    print(f"Event directory {event_directory} does not exist. Skipping...")
+                    continue  # Skip to the next result
+
                 directories = [d for d in os.listdir(event_directory) if os.path.isdir(os.path.join(event_directory, d))]
                 match_directory_exists = any(dir.startswith(str(result['match-id'])) for dir in directories)
 
                 print(f"Checking if demo directory exists for match {result['match-id']}")
                 if match_directory_exists:
                     print(f"Demo for match {result['match-id']} already saved. Skipping.")
-                    continue
+                    continue  # Skip downloading the demo
                 # Download, extract, and compress the demo file
                 if demo_link:
                     demo_link = "https://www.hltv.org"+demo_link
