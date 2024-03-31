@@ -13,7 +13,7 @@ import shutil
 from demoparser2 import DemoParser
 import hashlib
 from awpy import Demo
-from awpy.analytics.adr import adr
+from awpy.stats.adr import adr
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
 HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
