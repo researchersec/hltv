@@ -1,0 +1,50 @@
+{
+ "crosshair_code":{
+  "0":"CSGO-NmWAr-XJQpq-wwemF-xVL6L-FTBtG",
+  "1":"CSGO-Dvyhp-M5FKS-cLuew-5qQTr-yMJvM",
+  "2":"CSGO-vJJ8k-FOFy5-cALab-7zzvq-pLDhP",
+  "3":"CSGO-n3bzO-A97wQ-TYH9j-EBzrc-SLLTK",
+  "4":"CSGO-ibs29-dFvSJ-mRUuq-Kp3Qz-FfbcP",
+  "5":"CSGO-oTutp-xd7oo-dujom-wOBHV-NTivN",
+  "6":"CSGO-3P8vG-eFro9-pvpiB-Ut7o3-dv6KQ",
+  "7":"CSGO-3G8Bo-JWJrF-mV2Bt-ScxbP-ERNMB",
+  "8":"CSGO-Wb3cf-6jki3-wEWQ3-2M73C-oCyXD",
+  "9":"CSGO-YsvFt-adeb8-eU4F3-MowM4-S79zP"
+ },
+ "tick":{
+  "0":180140,
+  "1":180140,
+  "2":180140,
+  "3":180140,
+  "4":180140,
+  "5":180140,
+  "6":180140,
+  "7":180140,
+  "8":180140,
+  "9":180140
+ },
+ "steamid":{
+  "0":76561198044112269,
+  "1":76561198066222967,
+  "2":76561198065830177,
+  "3":76561198050779850,
+  "4":76561198068506849,
+  "5":76561198024347602,
+  "6":76561198048350311,
+  "7":76561198067762481,
+  "8":76561198018591028,
+  "9":76561198086803740
+ },
+ "name":{
+  "0":"void minutiae",
+  "1":"kobe",
+  "2":"foggers",
+  "3":"rekonz",
+  "4":"pz",
+  "5":"hazr @LAN #newmouse #newheadset ",
+  "6":"damyo @ LAN",
+  "7":"ADDICT@LAN.",
+  "8":"apocdud",
+  "9":"BRACE @LAN"
+ }
+}
