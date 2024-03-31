@@ -92,7 +92,7 @@ def _monthNameToNumber(monthName: str):
     return datetime.datetime.strptime(monthName, "%B").month
 
 def get_results():
-    results = get_parsed_page("https://www.hltv.org/results/")
+    results = get_parsed_page("https://www.hltv.org/results?offset=100")
 
     results_list = []
 
@@ -211,11 +211,12 @@ def get_results_with_demo_links():
                     result["tourney-mode"] = "online"
                 elif "(LAN)" in tourney_mode_data:
                     result["tourney-mode"] = "lan"
-                # Check if the demo directory exists in the repository using the match-id
-                demo_directory = os.path.join(root_directory, result['tourney-mode'], result['event'], f"{result['match-id']}")
-                print(f"Checking if demo directory exists: {demo_directory}")
-                if os.path.exists(demo_directory):
-                    # If demo directory exists, print message and continue to the next result
+                event_directory = os.path.join(root_directory, result['tourney-mode'], result['event'])
+                directories = [d for d in os.listdir(event_directory) if os.path.isdir(os.path.join(event_directory, d))]
+                match_directory_exists = any(dir.startswith(str(result['match-id'])) for dir in directories)
+
+                print(f"Checking if demo directory exists for match {result['match-id']}")
+                if match_directory_exists:
                     print(f"Demo for match {result['match-id']} already saved. Skipping.")
                     continue
                 # Download, extract, and compress the demo file
