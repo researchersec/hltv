@@ -19,9 +19,7 @@ HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
 HLTV_ZONEINFO = zoneinfo.ZoneInfo(HLTV_COOKIE_TIMEZONE)
 LOCAL_TIMEZONE_NAME = tzlocal.get_localzone_name()
 LOCAL_ZONEINFO = zoneinfo.ZoneInfo(LOCAL_TIMEZONE_NAME)
-
 FLARE_SOLVERR_URL = "http://localhost:8191/v1"
-
 TEAM_MAP_FOR_RESULTS = []
 
 def compute_file_hash(filename):
