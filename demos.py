@@ -48,7 +48,6 @@ def get_parsed_page(url):
             return BeautifulSoup(html, "lxml")
     except requests.RequestException as e:
         print(f"Error making HTTP request: {e}")
-    
     return None
 
 def _get_all_teams():
