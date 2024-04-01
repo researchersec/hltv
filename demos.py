@@ -295,6 +295,7 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 # Proceed with parsing and processing
             
                 print("Parsing started")
+                print(f"File: {file}")
 
                 # Testing demoparser2
                 #event_df = parser.parse_event("player_death", player=["X", "Y"], other=["total_rounds_played"])
