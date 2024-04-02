@@ -153,19 +153,9 @@ def get_results_with_demo_links():
     root_directory = os.getcwd()
 
     for result in results_list:
-        logging.debug("Checking event directory")
-        event_directory = os.path.join(root_directory, result.get('tourney-mode', ''), result['event'])
-
-        if os.path.exists(event_directory):
-            all_directories = [d for d in os.listdir(event_directory) if os.path.isdir(os.path.join(event_directory, d))]
-            match_directory_exists = any(dir.startswith(str(result['match-id'])) for dir in all_directories)
-            if match_directory_exists:
-                logging.debug(f"A directory starting with match ID {result['match-id']} exists. Skipping...")
-                continue
-
-        logging.debug("Getting demo link")
         url = result["url"]
         result_page = get_parsed_page(url)
+        logging.debug("getting demo link")
 
         if result_page:
             demo_link_element = result_page.find('a', {'class': 'stream-box'})
@@ -175,6 +165,15 @@ def get_results_with_demo_links():
                 if tourney_mode:
                     tourney_mode_data = tourney_mode.find("div", {"class": "padding preformatted-text"}).text
                     result["tourney-mode"] = "online" if "(Online)" in tourney_mode_data else "lan" if "(LAN)" in tourney_mode_data else None
+                event_directory = os.path.join(root_directory, result.get('tourney-mode', ''), result['event'])
+
+                if os.path.exists(event_directory):
+                    all_directories = [d for d in os.listdir(event_directory) if os.path.isdir(os.path.join(event_directory, d))]
+                    match_directory_exists = any(dir.startswith(str(result['match-id'])) for dir in all_directories)
+                    if match_directory_exists:
+                        logging.debug(f"A directory starting with match ID {result['match-id']} exists. Skipping...")
+                        continue
+                        
                 if demo_link:
                     demo_link = "https://www.hltv.org" + demo_link
                     logging.info(demo_link)
