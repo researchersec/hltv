@@ -164,7 +164,7 @@ def get_results_with_demo_links():
                 if tourney_mode:
                     tourney_mode_data = tourney_mode.find("div", {"class": "padding preformatted-text"}).text
                     result["tourney-mode"] = "online" if "(Online)" in tourney_mode_data else "lan" if "(LAN)" in tourney_mode_data else None
-                event_directory = os.path.join(root_directory, result.get('tourney-mode', ''), result['event'])
+                event_directory = os.path.join(root_directory, result['tourney-mode'], result['event'])
 
                 if os.path.exists(event_directory):
                     all_directories = [d for d in os.listdir(event_directory) if os.path.isdir(os.path.join(event_directory, d))]
