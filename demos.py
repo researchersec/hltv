@@ -15,7 +15,6 @@ import hashlib
 from awpy import Demo
 from awpy.stats.adr import adr
 
-# Setting up logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
