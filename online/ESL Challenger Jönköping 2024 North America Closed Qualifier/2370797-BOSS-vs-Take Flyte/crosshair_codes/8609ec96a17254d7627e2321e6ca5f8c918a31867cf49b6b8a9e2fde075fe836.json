@@ -1,0 +1,58 @@
+{
+ "crosshair_code":{
+  "0":"CSGO-qu2kd-TKSqb-tubEo-HjYvr-FFhnL",
+  "1":"CSGO-kbymK-HMjD7-aP4P4-zjfry-hOxoO",
+  "2":"CSGO-d8MKA-ZxpyP-CtTcj-YBGrm-ia4NF",
+  "3":"CSGO-UjNzA-a3bnD-jEwZq-OMfJB-U3SKF",
+  "4":"CSGO-GzGcH-GWXBE-FiaDc-t3smA-BGH8D",
+  "5":"CSGO-tNVRC-8h2fe-WT7yR-TJeUv-o5LsE",
+  "6":"CSGO-S5BYa-wd67K-Kf3Vo-3GxkS-HpUrC",
+  "7":"CSGO-wxL9a-r9baz-BFuqW-7KxbP-aUeuB",
+  "8":"CSGO-hvUTF-FMB6O-LjGGp-niDYP-Ms8rN",
+  "9":"CSGO-kJCeS-dPTGX-pSPEh-hXQ7Y-OYdBN",
+  "10":"CSGO-VyvjN-Hd5QG-rDQ27-8NfFJ-3nUCP",
+  "11":"CSGO-bzEOU-x2oTz-saN2w-mqmuR-bb4NF"
+ },
+ "tick":{
+  "0":151202,
+  "1":151202,
+  "2":151202,
+  "3":151202,
+  "4":151202,
+  "5":151202,
+  "6":151202,
+  "7":151202,
+  "8":151202,
+  "9":151202,
+  "10":151202,
+  "11":151202
+ },
+ "steamid":{
+  "0":76561198094514426,
+  "1":76561198029235071,
+  "2":76561198336814871,
+  "3":76561198199767289,
+  "4":76561198272723319,
+  "5":76561198055631941,
+  "6":76561198124204178,
+  "7":76561198193201447,
+  "8":76561198162408395,
+  "9":76561197984266377,
+  "10":76561197963450946,
+  "11":76561198310650658
+ },
+ "name":{
+  "0":"Coach | Axed",
+  "1":"Cryptic",
+  "2":"freshie",
+  "3":"CoJoMo",
+  "4":"JC",
+  "5":"beakiew0w",
+  "6":"Gabe",
+  "7":"Coach | CooperTrooper",
+  "8":"d4rty",
+  "9":"PwnAlone",
+  "10":"mds ",
+  "11":"shutout"
+ }
+}
