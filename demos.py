@@ -265,5 +265,5 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
         logging.error(f"An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
-    logging.info("Results with demo links:")
+    #logging.info("Results with demo links:")
     logging.info(get_results_with_demo_links())
