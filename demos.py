@@ -234,7 +234,7 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
 
                 # Creating directories and saving parsed data to JSON files
                 output_directories = [f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/{dirname}"
-                                      for dirname in ["kills", "damages", "bombs", "smokes", "infernos", "weapon_fires", "crosshair_codes", "scoreboard", "adr", "skins]]
+                                      for dirname in ["kills", "damages", "bombs", "smokes", "infernos", "weapon_fires", "crosshair_codes", "scoreboard", "adr", "skins"]]
                 for output_dir in output_directories:
                     os.makedirs(output_dir, exist_ok=True)
 
