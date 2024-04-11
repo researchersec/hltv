@@ -12,6 +12,7 @@ import subprocess
 import shutil
 from demoparser2 import DemoParser
 import hashlib
+import traceback
 from awpy import Demo
 from awpy.stats.adr import adr
 
@@ -258,7 +259,8 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
     except requests.RequestException as e:
         logging.error(f"Error downloading demo file: {e}")
     except Exception as e:
-        logging.error(f"An unexpected error occurred: {e}")
+        logging.error(f"An unexpected error occurred: {type(e).__name__} - {str(e)}")
+        logging.error(traceback.format_exc())
     finally:
         # Cleanup code
         if os.path.exists("extracted_files"):
