@@ -250,8 +250,8 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
             else:
                 logging.info(f"Ignoring file {file} because it's not a .dem file")
 
-        shutil.rmtree("extracted_files")
-        logging.debug("Deleted extracted files")
+        #shutil.rmtree("extracted_files")
+        #logging.debug("Deleted extracted files")
         os.remove(filename)
         logging.debug(f"Deleted {filename}")
 
@@ -259,6 +259,11 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
         logging.error(f"Error downloading demo file: {e}")
     except Exception as e:
         logging.error(f"An unexpected error occurred: {e}")
+    finally:
+        # Cleanup code
+        if os.path.exists("extracted_files"):
+            shutil.rmtree("extracted_files")
+            logging.debug("Deleted extracted files")
 
 if __name__ == "__main__":
     logging.info("Results with demo links:")
