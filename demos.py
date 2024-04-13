@@ -14,7 +14,6 @@ from demoparser2 import DemoParser
 import hashlib
 import traceback
 from awpy import Demo
-from awpy.stats.adr import adr
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -84,7 +83,6 @@ def _monthNameToNumber(monthName: str):
 
 def get_results():
     results = get_parsed_page("https://www.hltv.org/results")
-
     results_list = []
     pastresults = results.find_all("div", {"class": "results-holder"})
 
@@ -93,7 +91,6 @@ def get_results():
 
         for res in resultDiv:
             resultObj = {}
-
             resultObj["url"] = "https://hltv.org" + res.find("a", {"class": "a-reset"}).get("href")
             resultObj["match-id"] = converters.to_int(res.find("a", {"class": "a-reset"}).get("href").split("/")[-2])
 
@@ -153,6 +150,14 @@ def get_results_with_demo_links():
     root_directory = os.getcwd()
 
     for result in results_list:
+        event_directory = os.path.join(root_directory, result['tourney-mode'], result['event'])
+        all_directories = os.listdir(event_directory) if os.path.exists(event_directory) else []
+        match_directory_exists = any(dir.startswith(str(result['match-id'])) for dir in all_directories)
+
+        if match_directory_exists:
+            logging.debug(f"A directory starting with match ID {result['match-id']} exists. Skipping...")
+            continue  # Skip the current iteration if the directory exists
+
         url = result["url"]
         result_page = get_parsed_page(url)
         logging.debug("getting demo link")
@@ -162,20 +167,12 @@ def get_results_with_demo_links():
             tourney_mode = result_page.find('div', {'class': 'standard-box veto-box'})
             if demo_link_element:
                 demo_link = demo_link_element.get('data-demo-link')
-                if tourney_mode:
-                    tourney_mode_data = tourney_mode.find("div", {"class": "padding preformatted-text"}).text
-                    result["tourney-mode"] = "online" if "(Online)" in tourney_mode_data else "lan" if "(LAN)" in tourney_mode_data else None
-                event_directory = os.path.join(root_directory, result['tourney-mode'], result['event'])
-
-                if os.path.exists(event_directory):
-                    all_directories = [d for d in os.listdir(event_directory) if os.path.isdir(os.path.join(event_directory, d))]
-                    match_directory_exists = any(dir.startswith(str(result['match-id'])) for dir in all_directories)
-                    if match_directory_exists:
-                        logging.debug(f"A directory starting with match ID {result['match-id']} exists. Skipping...")
-                        continue
-                        
                 if demo_link:
                     demo_link = "https://www.hltv.org" + demo_link
+                    result["demo-link"] = demo_link
+                    if tourney_mode:
+                        tourney_mode_data = tourney_mode.find("div", {"class": "padding preformatted-text"}).text
+                        result["tourney-mode"] = "online" if "(Online)" in tourney_mode_data else "lan" if "(LAN)" in tourney_mode_data else None
                     logging.info(demo_link)
                     download_demo_file(demo_link, result)
             else:
