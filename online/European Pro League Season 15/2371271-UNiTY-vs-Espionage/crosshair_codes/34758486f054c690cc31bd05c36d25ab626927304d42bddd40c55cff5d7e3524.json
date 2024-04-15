@@ -1,0 +1,50 @@
+{
+ "crosshair_code":{
+  "0":"CSGO-TVYui-x3bdJ-vzr98-vBisR-6sWPA",
+  "1":"CSGO-xSXvo-Ra8NX-LeurS-FKNiY-zqLDR",
+  "2":"CSGO-CKTSp-p58wm-FRDOH-znBVw-nWMbM",
+  "3":"CSGO-rMq7D-TF78i-R8E29-hrMnu-i3xDK",
+  "4":"CSGO-NqeYP-nNa4M-VBvV2-x3C8P-AzZkF",
+  "5":"CSGO-2m6PJ-YfBFa-zQ6mk-u8V3i-RPeyC",
+  "6":"CSGO-zvFEF-MeQyv-tvLwa-W7cef-97DRE",
+  "7":"CSGO-NqeYP-nNa4M-VBvV2-x3C8P-AzZkF",
+  "8":"CSGO-xSXvo-Ra8NX-LeurS-FKNiY-zqLDR",
+  "9":"CSGO-Hi6qs-6nR33-K6YCj-kZakJ-FKuSJ"
+ },
+ "tick":{
+  "0":166058,
+  "1":166058,
+  "2":166058,
+  "3":166058,
+  "4":166058,
+  "5":166058,
+  "6":166058,
+  "7":166058,
+  "8":166058,
+  "9":166058
+ },
+ "steamid":{
+  "0":76561198130573328,
+  "1":76561198182168605,
+  "2":76561198188347379,
+  "3":76561198070459137,
+  "4":76561197991000831,
+  "5":76561198024500837,
+  "6":76561198129824467,
+  "7":76561198110563159,
+  "8":76561198053792941,
+  "9":76561198190930470
+ },
+ "name":{
+  "0":"NIO",
+  "1":"M1key",
+  "2":"MistR",
+  "3":"kwezz",
+  "4":"IceBerg :)",
+  "5":"Levi",
+  "6":"K1 - FiDa",
+  "7":"lucky",
+  "8":"Pechyn",
+  "9":"Cabbi"
+ }
+}
