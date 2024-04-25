@@ -150,31 +150,34 @@ def get_results_with_demo_links():
     root_directory = os.getcwd()
 
     for result in results_list:
+        # Early fetch of the result page to determine tourney-mode
         url = result["url"]
         result_page = get_parsed_page(url)
+        
+        tourney_mode_data = None
+        if result_page:
+            tourney_mode_element = result_page.find('div', {'class': 'standard-box veto-box'})
+            if tourney_mode_element:
+                tourney_mode_data = tourney_mode_element.find("div", {"class": "padding preformatted-text"}).text
+                result['tourney-mode'] = "online" if "(Online)" in tourney_mode_data else "lan" if "(LAN)" in tourney_mode_data else "unknown"
+            else:
+                result['tourney-mode'] = "unknown"
+        
+        # Now check for existing directory
+        event_directory = os.path.join(root_directory, result['tourney-mode'], result['event'])
+        all_directories = os.listdir(event_directory) if os.path.exists(event_directory) else []
+        match_directory_exists = any(dir.startswith(str(result['match-id'])) for dir in all_directories)
+        
+        if match_directory_exists:
+            logging.debug(f"A directory starting with match ID {result['match-id']} exists. Skipping...")
+            continue
+
         logging.debug("Attempting to fetch demo link and tourney mode info")
 
         if result_page:
             demo_link_element = result_page.find('a', {'class': 'stream-box'})
-            tourney_mode = result_page.find('div', {'class': 'standard-box veto-box'})
             if demo_link_element:
                 demo_link = demo_link_element.get('data-demo-link')
-                tourney_mode_data = None
-                if tourney_mode:
-                    tourney_mode_data = tourney_mode.find("div", {"class": "padding preformatted-text"}).text
-                    result["tourney-mode"] = "online" if "(Online)" in tourney_mode_data else "lan" if "(LAN)" in tourney_mode_data else "unknown"
-                else:
-                    result["tourney-mode"] = "unknown"
-                
-                result["event"] = result.get("event", "unknown")
-                event_directory = os.path.join(root_directory, result['tourney-mode'], result['event'])
-                all_directories = os.listdir(event_directory) if os.path.exists(event_directory) else []
-                match_directory_exists = any(dir.startswith(str(result['match-id'])) for dir in all_directories)
-
-                if match_directory_exists:
-                    logging.debug(f"A directory starting with match ID {result['match-id']} exists. Skipping...")
-                    continue
-
                 if demo_link:
                     demo_link = "https://www.hltv.org" + demo_link
                     result["demo-link"] = demo_link
@@ -182,10 +185,8 @@ def get_results_with_demo_links():
                     download_demo_file(demo_link, result)
             else:
                 result["demo-link"] = None
-                result["tourney-mode"] = None
         else:
             result["demo-link"] = None
-            result["tourney-mode"] = None
 
     return results_list
 
