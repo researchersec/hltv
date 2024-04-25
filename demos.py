@@ -14,7 +14,7 @@ from demoparser2 import DemoParser
 import hashlib
 import traceback
 from awpy import Demo
-
+from awpy.stats.adr import adr
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 HLTV_COOKIE_TIMEZONE = "Europe/Copenhagen"
