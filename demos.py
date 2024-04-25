@@ -235,7 +235,7 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
 
                 # Creating directories and saving parsed data to JSON files
                 output_directories = [f"{result['tourney-mode']}/{result['event']}/{result['match-id']}-{result['team1']}-vs-{result['team2']}/{dirname}"
-                                      for dirname in ["kills", "damages", "bombs", "smokes", "infernos", "weapon_fires", "crosshair_codes", "scoreboard", "adr"]]
+                                      for dirname in ["kills", "damages", "bombs", "smokes", "infernos", "weapon_fires", "crosshair_codes", "scoreboard", "adr", "bombs"]]
                 for output_dir in output_directories:
                     os.makedirs(output_dir, exist_ok=True)
 
@@ -246,7 +246,8 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 parsed_demo.smokes.to_json(f'{output_directories[3]}/{file_hash}.json', indent=1)
                 parsed_demo.infernos.to_json(f'{output_directories[4]}/{file_hash}.json', indent=1)
                 parsed_demo.weapon_fires.to_json(f'{output_directories[5]}/{file_hash}.json', indent=1)
-                #adr(parsed_demo).to_json(f'{output_directories[8]}/{file_hash}.json', indent=1)
+                parsed_demo.bomb.to_json(f'{output_directories[9]}/{file_hash}.json', indent=1)
+                adr(parsed_demo).to_json(f'{output_directories[8]}/{file_hash}.json', indent=1)
                 
                 logging.debug("Parsing finished")
                 logging.info("Parsed file saved")
