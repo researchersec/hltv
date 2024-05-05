@@ -23,9 +23,9 @@ jobs:
 
     - name: Setup rarfile
       run: pip install rarfile
-
+     #https://github.com/pnxenopoulos/awpy@awpy2
     - name: Setup Awpy
-      run: pip install git+https://github.com/pnxenopoulos/awpy@awpy2
+      run: pip install git+https://github.com/hojlund123/awpy@awpy2
 
     - name: Pull Docker image
       run: docker pull ghcr.io/flaresolverr/flaresolverr:v3.3.16
