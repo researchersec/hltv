@@ -12,6 +12,9 @@ jobs:
       RUST_BACKTRACE: 1
     
     steps:
+    - name: Set RUST_BACKTRACE environment variable
+      run: export RUST_BACKTRACE=full
+    
     - name: Checkout repository
       uses: actions/checkout@v2
 
