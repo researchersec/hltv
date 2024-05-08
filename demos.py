@@ -82,7 +82,7 @@ def _monthNameToNumber(monthName: str):
     return datetime.datetime.strptime(monthName, "%B").month
 
 def get_results():
-    results = get_parsed_page("https://www.hltv.org/results?offset=100")
+    results = get_parsed_page("https://www.hltv.org/results")
     results_list = []
     pastresults = results.find_all("div", {"class": "results-holder"})
 
@@ -254,6 +254,9 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                 logging.info("Parsed file saved")
             else:
                 logging.info(f"Ignoring file {file} because it's not a .dem file")
+        except Exception as parse_error:
+            logging.error(f"Failed to process {file} due to {parse_error}")
+            continue  # Continue with the next file even if one file fails
 
         #shutil.rmtree("extracted_files")
         #logging.debug("Deleted extracted files")
