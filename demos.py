@@ -253,9 +253,9 @@ def download_demo_file(demo_link, result, api_url=FLARE_SOLVERR_URL):
                     
                     logging.debug("Parsing finished")
                     logging.info("Parsed file saved")
-                except IndexError as parse_error:
-                    logging.error(f"Parse error: {parse_error}. File may be corrupt or incomplete.")
-                    continue  # Continue processing other files even if this one fails.
+                except Exception as e:
+                    logging.error(f"Failed to parse {file} due to an error: {e}")
+                    continue  # Skip this file and move to the next processing other files even if this one fails.
             else:
                 logging.info(f"Ignoring file {file} because it's not a .dem file")
 
